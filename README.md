@@ -5,10 +5,12 @@ Simple opensource social network, designed by students in Yandex Course
 * You need NodeJS to be installed on your device
 
 ## Quick start
-* npm install - `[not working]` install dependencies needed for work
-* npm install --dev - `[not working]` install all dependencies needed for development
-* npm start - `[not working]` start application
-* npm test - `[not working]` run tests
+* npm install - install dependencies needed for work
+* npm install --dev - install all dependencies needed for development
+* npm run build - compiles TypeScript in /dist directory
+* npm run start - start application
+* npm run dev - start application for development
+* npm run test - `[not working]` run tests
 
 ## Links
 * [Dashboard](https://trello.com/b/xUnRQrQE/kilogram)
