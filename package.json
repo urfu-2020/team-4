@@ -8,6 +8,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
+    "build": "npm-run-all --parallel build:*",
     "build:ts": "tsc",
     "start": "cross-env NODE_PATH=dist/ node dist/",
     "dev": "nodemon --config nodemon.json src/index.ts"
