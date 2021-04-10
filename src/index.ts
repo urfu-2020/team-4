@@ -17,8 +17,8 @@ app.get('/', (req, res) => {
     res.send('Lorem ipsum dolor sit amet');
 });
 
-const port = config.get('port');
-// const port = process.env.PORT;
+// const port = config.get('port');
+const port = process.env.PORT;
 
 app.listen(port, () => {
     console.info(`Server started on ${port}`);
