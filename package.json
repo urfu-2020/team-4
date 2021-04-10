@@ -1,0 +1,46 @@
+{
+  "name": "kilogram-team-4",
+  "version": "1.0.0",
+  "description": "Simple opensource social network, designed by students in Yandex Course",
+  "private": true,
+  "engines": {
+    "node": "15"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm-run-all --parallel build:*",
+    "build:ts": "tsc",
+    "build:static": "copyfiles --up 1 \"./src/views/**/*\" \"./src/public/*\" dist/",
+    "start": "cross-env NODE_PATH=dist/ node dist/",
+    "dev": "nodemon --config nodemon.json src/index.ts",
+    "surge": "surge -p ./dist/public -d $npm_package_name.surge.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urfu-2020/team-4.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/urfu-2020/team-4/issues"
+  },
+  "homepage": "https://github.com/urfu-2020/team-4#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.3.6",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.37",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.23.0",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "surge": "^0.22.1",
+    "ts-node": "^9.1.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.2.4"
+  }
+}
