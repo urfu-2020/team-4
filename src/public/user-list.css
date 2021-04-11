@@ -1,0 +1,45 @@
+.user-list {
+    display: flex;
+    flex-direction: row;
+}
+
+.user-card {
+    --card-height: 100px;
+    width: 80%;
+    height: var(--card-height);
+    border-radius: 10px;
+    background-color: #a0bbff;
+
+    display: grid;
+    grid-template:
+            "b a" 30px
+            "b c" 1fr / 20% 1fr;
+}
+
+.avatar {
+    width: calc(var(--card-height) - 10px);
+    height: calc(var(--card-height) - 10px);
+    background: silver;
+    overflow: hidden;
+    margin: 5px;
+    border: #081e5f solid 1px;
+    border-radius: 100px;
+    align-self: flex-start;
+
+    grid-area: b;
+}
+
+.image {
+    width: var(--header-height);
+    height: var(--header-height);
+}
+
+.name {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+
+    font-size: 20px;
+
+    grid-area: a;
+}
