@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/', (req, res) => {
-    res.send('Lorem ipsum dolor sit amet');
+    res.send('Lorem ipsum dolor sit amett!');
 });
 
 const port = config.get('port');
