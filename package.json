@@ -12,6 +12,7 @@
     "build:ts": "tsc",
     "build:static": "copyfiles --up 1 \"./src/views/**/*\" \"./src/public/*\" dist/",
     "start": "cross-env NODE_PATH=dist/ node dist/",
+    "postinstall": "tsc",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "surge": "surge -p ./dist/public -d $npm_package_name.surge.sh",
     "lint": "npm run lint:html && npm run lint:css && npm run lint:ts && npm run lint:js",
