@@ -25,11 +25,10 @@
     "heroku:release": "heroku container:release web",
     "heroku:open": "heroku open",
     "start:docker": "docker build --tag kilogram:0.0-local . && docker run --rm -d -p 80:80 kilogram:0.0-local",
-    "lint": "npm run lint:html && npm run lint:css && npm run lint:ts && npm run lint:js",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
     "lint:html": "linthtml \"src/**/*.html\"",
     "lint:css": "stylelint \"src/**/*.css\"",
-    "lint:ts": "eslint . --ext .ts",
-    "lint:js": "eslint . --ext .js",
+    "lint:js": "eslint . --ext .ts,.js",
     "format": "prettier --write \"**/*.{js,css,json,yaml,yml,md}\""
   },
   "repository": {
