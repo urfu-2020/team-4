@@ -13,6 +13,7 @@
     "build:static": "copyfiles --up 1 \"./src/views/**/*\" \"./src/public/*\" dist/",
     "start": "cross-env NODE_PATH=dist/ node dist/",
     "dev": "nodemon --config nodemon.json src/index.ts",
+    "test": "echo No tests yet && exit 0",
     "surge": "cross-env-shell surge -p ./dist/public -d $npm_package_name.surge.sh",
     "deps:all": "npm ci",
     "deps:production": "npm ci --production",
@@ -23,11 +24,10 @@
     "heroku:release": "heroku container:release web",
     "heroku:open": "heroku open",
     "start:docker": "docker build --tag kilogram:0.0-local . && docker run --rm -d -p 80:80 kilogram:0.0-local",
-    "lint": "npm run lint:html && npm run lint:css && npm run lint:ts && npm run lint:js",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
     "lint:html": "linthtml \"src/**/*.html\"",
     "lint:css": "stylelint \"src/**/*.css\"",
-    "lint:ts": "eslint . --ext .ts",
-    "lint:js": "eslint . --ext .js",
+    "lint:js": "eslint . --ext .ts,.js",
     "format": "prettier --write \"**/*.{js,css,json,yaml,yml,md}\""
   },
   "repository": {
