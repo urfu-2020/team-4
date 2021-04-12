@@ -23,7 +23,6 @@
     "heroku:push": "heroku container:push web",
     "heroku:release": "heroku container:release web",
     "heroku:open": "heroku open",
-    "heroku:buildcfg": "heroku config:set USE_NPM_INSTALL=true",
     "start:docker": "docker build --tag kilogram:0.0-local . && docker run --rm -d -p 80:80 kilogram:0.0-local",
     "lint": "npm run lint:html && npm run lint:css && npm run lint:ts && npm run lint:js",
     "lint:html": "linthtml \"src/**/*.html\"",
