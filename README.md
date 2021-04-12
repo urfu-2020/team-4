@@ -34,10 +34,16 @@ If you have Docker, you can build and run app in the container:
 | lint:ts      | TS Linting                                                        |
 | format       | Code Formatting                                                   |
 
+## Examples
+
+See example of deployed projects:
+- [Stable (master branch)](https://kilogram-team4-master.herokuapp.com/)
+- [Develop branch](https://kilogramcd-team4-develop.herokuapp.com/)
+
+
 ## Links
 
 - [Dashboard](https://trello.com/b/xUnRQrQE/kilogram)
 - [Slides Repository](https://github.com/urfu-2020/slides)
-- [Develop branch](https://kilogramcd-team4-develop.herokuapp.com/)
 
 See chat for actual actions
