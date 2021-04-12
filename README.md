@@ -34,6 +34,6 @@ Simple opensource social network, designed by students in Yandex Course
 
 - [Dashboard](https://trello.com/b/xUnRQrQE/kilogram)
 - [Slides Repository](https://github.com/urfu-2020/slides)
-- [Look how autodeploy working on cd_testing branch](https://kilogramcd-team4.herokuapp.com/)
+- [Develop branch](https://kilogramcd-team4-develop.herokuapp.com/)
 
 See chat for actual actions
