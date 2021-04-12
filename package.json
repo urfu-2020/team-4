@@ -4,7 +4,8 @@
   "description": "Simple opensource social network, designed by students in Yandex Course",
   "private": true,
   "engines": {
-    "node": "15"
+    "node": "14",
+    "npm": "6"
   },
   "main": "dist/index.js",
   "scripts": {
