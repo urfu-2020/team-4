@@ -12,7 +12,7 @@
     "build:ts": "tsc",
     "build:static": "copyfiles --up 1 \"./src/views/**/*\" \"./src/public/*\" dist/",
     "start": "cross-env NODE_PATH=dist/ node dist/",
-    "postinstall": "tsc",
+    "postinstall": "npm run tsc",
     "dev": "nodemon --config nodemon.json src/index.ts",
     "surge": "cross-env-shell surge -p ./dist/public -d $npm_package_name.surge.sh",
     "deps:all": "npm ci",
