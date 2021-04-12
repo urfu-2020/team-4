@@ -30,6 +30,12 @@ Simple opensource social network, designed by students in Yandex Course
 | lint:ts      | TS Linting                                                        |
 | format       | Code Formatting                                                   |
 
+## Examples
+See example of deployed projects:
+- [Stable (master branch)](https://kilogram-team4-master.herokuapp.com/)
+- [Develop branch](https://kilogramcd-team4-develop.herokuapp.com/)
+
+
 ## Links
 
 - [Dashboard](https://trello.com/b/xUnRQrQE/kilogram)
