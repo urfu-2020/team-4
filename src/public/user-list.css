@@ -1,44 +1,48 @@
 .user-list {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .user-card {
-    width: 80%;
-    height: 100px;
-    border-radius: 10px;
-    background-color: #a0bbff;
+  display: grid;
+  grid-template:
+    'avatar user-name' 30px
+    'avatar info' 1fr / 20% 1fr;
 
-    display: grid;
-    grid-template:
-            "avatar user-name" 30px
-            "avatar info" 1fr / 20% 1fr;
+  width: 80%;
+  height: 100px;
+
+  border-radius: 10px;
+
+  background-color: #a0bbff;
 }
 
 .chat__header__avatar {
-    width: 90px;
-    height: 90px;
-    background: silver;
-    overflow: hidden;
-    margin: 5px;
-    border: #081e5f solid 1px;
-    border-radius: 100px;
-    align-self: flex-start;
+  overflow: hidden;
+  align-self: flex-start;
+  grid-area: avatar;
 
-    grid-area: avatar;
+  width: 90px;
+  height: 90px;
+  margin: 5px;
+
+  border: #081e5f solid 1px;
+  border-radius: 100px;
+
+  background: silver;
 }
 
 .image {
-    width: 70px;
-    height: 70px;
+  width: 70px;
+  height: 70px;
 }
 
 .chat__header__name {
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  grid-area: user-name;
 
-    font-size: 20px;
+  margin-left: 10px;
 
-    grid-area: user-name;
+  font-size: 20px;
 }
