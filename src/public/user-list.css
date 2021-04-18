@@ -1,6 +1,6 @@
 .user-list {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .user-card {
@@ -11,13 +11,14 @@
 
   width: 80%;
   height: 100px;
+  margin: 10px 0;
 
   border-radius: 10px;
 
   background-color: #a0bbff;
 }
 
-.chat__header__avatar {
+.user-card__avatar {
   overflow: hidden;
   align-self: flex-start;
   grid-area: avatar;
@@ -29,15 +30,17 @@
   border: #081e5f solid 1px;
   border-radius: 100px;
 
-  background: silver;
+  background: #c0c0c0;
 }
 
-.image {
-  width: 70px;
-  height: 70px;
+.user-card__avatar-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
 }
 
-.chat__header__name {
+.user-card__name {
   display: flex;
   align-items: center;
   grid-area: user-name;
