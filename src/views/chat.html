@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>Chat</title>
     <link rel="stylesheet" href="/team-4/src/public/chat.css" media="screen">
-</head>
-<body>
+  </head>
+  <body>
     <article class="chat-modal">
-        <div class="chat__header">
-            <div class="chat__header__avatar">
-                <img src="/team-4/src/public/avatar.jpg" class="image">
-            </div>
-            <div class="chat__header__name">имя юзера</div>
+      <div class="chat__header">
+        <div class="chat__header__avatar">
+          <img src="/team-4/src/public/avatar.jpg" class="image" alt="avatar">
         </div>
-        <div class="chat__messages">
-            <div class="my-message">
-                Привет
-            </div>
-            <div class="others-message">
-                Хай
-            </div>
-            <div class="others-message">
-                Очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень м оченьочень длинное сообщение
-            </div>
+        <div class="chat__header__name">имя юзера</div>
+      </div>
+      <div class="chat__messages">
+        <div class="my-message">
+          Привет
         </div>
-        <div class="chat__message-form">
-            <label class="chat">
-                <textarea class="chat__message-form__input"></textarea>
-            </label>
-            <button class="send-message-button" type="button">Отправить</button>
+        <div class="others-message">
+          Хай
         </div>
+        <div class="others-message">
+          Очень очень очень очень очень очень очень очень очень очень очень очень очень очень
+          очень оченьочень длинное сообщение
+        </div>
+      </div>
+      <div class="chat__message-form">
+        <label class="chat" for="message-form"></label>
+        <textarea id="message-form" class="chat__message-form__input"></textarea>
+        <button class="send-message-button" type="button">Отправить</button>
+      </div>
     </article>
-</body>
+  </body>
 </html>
