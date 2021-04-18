@@ -24,29 +24,26 @@ body {
     border-radius: 5px;
 }
 
-.chat-header {
-    --header-height: 70px;
+.chat__header {
     margin: 0;
     width: auto;
-    height: var(--header-height);
+    height: 70px;
     display: flex;
     flex-direction: row;
 }
 
-.message-form {
+.chat__message-form {
     max-height: 50px;
-    display: grid;
-    grid-template-columns: 4fr 1fr;
+    display: flex;
+    flex-direction: row;
 }
 
-.message-container {
+.chat__messages {
     width: 100%;
 
     display: flex;
     flex-direction: column;
     background-color: #6381de;
-
-    flex-grow: 1;
     overflow: auto;
 }
 
@@ -71,24 +68,31 @@ body {
     align-self: flex-end;
 }
 
-.message-input {
+.chat__message-form__input {
     width: 99%;
     height: 90%;
+    margin: 2px;
     border: 0;
+
+    resize: none;
 }
 
 .chat {
     height: auto;
+    flex-grow: 1;
+    margin-right: 5px;
 }
 
 .send-message-button {
-    align-self: flex-end;
+    justify-self: flex-end;
     align-self: center;
+
+    margin: 5px;
 }
 
-.avatar {
-    width: calc(var(--header-height) - 10px);
-    height: calc(var(--header-height) - 10px);
+.chat__header__avatar {
+    width: 60px;
+    height: 60px;
     background: silver;
     overflow: hidden;
     margin: 5px;
@@ -97,11 +101,11 @@ body {
 }
 
 .image {
-    width: var(--header-height);
-    height: var(--header-height);
+    width: 70px;
+    height: 70px;
 }
 
-.name {
+.chat__header__name {
     margin-left: 10px;
     display: flex;
     align-items: center;
