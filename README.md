@@ -13,6 +13,10 @@ Simple opensource social network, designed by students in Yandex Course
 - **npm run start** - start application
 - **npm run test** - `[not working]` run tests
 
+If you have Docker, you can build and run app in the container:
+1. docker build --tag kilogram:0.0-local .
+2. docker run --rm -d -p 80:80 kilogram:0.0-local
+
 ## Available commands
 
 | Command      | Action                                                            |
@@ -29,6 +33,13 @@ Simple opensource social network, designed by students in Yandex Course
 | lint:js      | JS Linting                                                        |
 | lint:ts      | TS Linting                                                        |
 | format       | Code Formatting                                                   |
+
+## Examples
+
+See example of deployed projects:
+- [Stable (master branch)](https://kilogram-team4-master.herokuapp.com/)
+- [Develop branch](https://kilogramcd-team4-develop.herokuapp.com/)
+
 
 ## Links
 
