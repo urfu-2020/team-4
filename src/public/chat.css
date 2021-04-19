@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
+.chat-container {
+  display: grid;
+  grid-template-rows: 1fr 5fr 1fr;
+
+  box-sizing: border-box;
+
+  width: 80%;
+  height: 80%;
+  margin: auto;
+
+  border: #1e90ff solid 2px;
+  border-radius: 5px;
+}
+
+.chat__header {
+  display: flex;
+  flex-direction: row;
+
+  width: auto;
+  height: 70px;
+  margin: 0;
+}
+
+.chat__message-form {
+  display: flex;
+  flex-direction: row;
+
+  max-height: 50px;
+}
+
+.chat__messages {
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+
+  width: 100%;
+
+  background-color: #6381de;
+}
+
+.my-message,
+.others-message {
+  justify-self: end;
+
+  min-width: 20%;
+  max-width: 80%;
+  margin: 4px;
+
+  border-radius: 3px;
+
+  background-color: #ffffff;
+  color: #081e5f;
+
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.others-message {
+  align-self: flex-start;
+}
+
+.my-message {
+  align-self: flex-end;
+}
+
+.chat__message-form__input {
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 100%;
+  margin: 2px;
+
+  border: #000000 solid 1px;
+
+  resize: none;
+}
+
+.chat {
+  flex-grow: 1;
+
+  height: auto;
+  margin-right: 5px;
+}
+
+.send-message-button {
+  align-self: center;
+  justify-self: flex-end;
+
+  margin: 5px;
+}
+
+.chat__user-avatar {
+  overflow: hidden;
+  align-self: flex-start;
+
+  width: 60px;
+  height: 60px;
+  margin: 5px;
+
+  border-radius: 100px;
+
+  background: #c0c0c0;
+}
+
+.chat__avatar-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.chat__username {
+  display: flex;
+  align-items: center;
+
+  margin-left: 10px;
+
+  font-size: 1.75em;
+}
