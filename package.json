@@ -14,7 +14,6 @@
     "build:next": "next build",
     "build:static": "copyfiles --up 1 \"./components/**/*.css\" \"./pages/**/*.css\" dist/public",
     "start": "cross-env NODE_PATH=dist/server node dist/server",
-    "dev": "nodemon --config nodemon.json server/index.ts",
     "test": "echo No tests yet && exit 0",
     "surge": "cross-env-shell surge -p ./dist/public -d $npm_package_name.surge.sh",
     "deps:all": "npm ci",
@@ -28,7 +27,7 @@
     "start:docker": "docker build --tag kilogram:0.0-local . && docker run --rm -d -p 80:80 kilogram:0.0-local",
     "lint": "npm-run-all --parallel lint:*",
     "lint:css": "stylelint \"components/**/*.css\"",
-    "lint:js": "eslint . --ext .ts,.js",
+    "lint:js": "eslint . --ext .ts,.js,.tsx",
     "format": "prettier --write \"**/*.{js,css,json,yaml,yml,md}\""
   },
   "repository": {
