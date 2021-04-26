@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User from 'models/user';
+import User from '../models/user';
 
 export function list(_req: Request, res: Response): void {
     // eslint-disable-next-line no-warning-comments

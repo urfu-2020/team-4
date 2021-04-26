@@ -7,9 +7,9 @@
     "node": "14",
     "npm": "6"
   },
-  "main": "dist/index.js",
+  "main": "dist/server/index.js",
   "scripts": {
-    "build": "npm-run-all build:next build:ts build:static",
+    "build": "npm-run-all --parallel build:*",
     "build:ts": "tsc -p .",
     "build:next": "next build",
     "build:static": "copyfiles --up 1 \"./components/**/*.css\" \"./pages/**/*.css\" dist/public",
