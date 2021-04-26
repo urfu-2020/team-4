@@ -6,7 +6,7 @@ COPY .prettierrc.js /
 COPY .prettierignore /
 COPY nodemon.json /
 COPY tsconfig.json /
-COPY src /
+COPY server /
 
 RUN npm install
 RUN npm run build
