@@ -1,0 +1,12 @@
+{{#each people}}
+  {{#with this}}
+    <div class="user-card">
+        <div class="user-card__avatar">
+          <img src={{avatar}} class="user-card__avatar-image" alt="avatar">
+        </div>
+        <div class="user-card__name">{{nickname}}</div>
+      </div>
+  {{/with}}
+{{else}}
+    <p>No users authenticated</p>
+{{/each}}
