@@ -82,15 +82,15 @@ app.use(express.static(publicDir));
 
 // Авторизация
 
-const isAuth = (req, res, next) => {
-    if (req.user) {
-        next();
-    } else {
-        res.redirect('/login');
-    }
-};
+// const isAuth = (req, res, next) => {
+//     if (req.user) {
+//         next();
+//     } else {
+//         res.redirect('/login');
+//     }
+// };
 
-app.get('/', isAuth, (req, res) => {
+app.get('/', (req, res) => {
 //     res.redirect('/contacts');
     res.send(`${clientId} ${clientSecret} ${sessionSecret}`);
 });
