@@ -36,7 +36,7 @@ app.use(exSession({
     cookie: {
         httpOnly: true,
         // При деплое нужно будет изменить secure на true (возможно:) )
-        secure: true,
+        secure: false,
         maxAge: 72 * 60 * 60 * 1000
     }
 }));
@@ -54,11 +54,12 @@ passport.deserializeUser(function (id, cb) {
 
 // Авторизация
 const GitHubStrategy = githubPassport.Strategy;
+const cbAddress = process.env.AUTH_CB_ADDRESS;
 
 passport.use(new GitHubStrategy({
     clientID: clientId,
     clientSecret: clientSecret,
-    callbackURL: 'http://localhost:3000/auth/github/callback'
+    callbackURL: cbAddress
 },
 function (accessToken, refreshToken, profile, cb) {
     user.findOrCreate({
