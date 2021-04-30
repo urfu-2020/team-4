@@ -36,7 +36,7 @@ app.use(exSession({
     cookie: {
         httpOnly: true,
         // При деплое нужно будет изменить secure на true (возможно:) )
-        secure: false,
+        secure: true,
         maxAge: 72 * 60 * 60 * 1000
     }
 }));
