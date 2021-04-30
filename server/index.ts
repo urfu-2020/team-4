@@ -54,11 +54,12 @@ passport.deserializeUser(function (id, cb) {
 
 // Авторизация
 const GitHubStrategy = githubPassport.Strategy;
+const cbAddress = process.env.AUTH_CB_ADDRESS;
 
 passport.use(new GitHubStrategy({
     clientID: clientId,
     clientSecret: clientSecret,
-    callbackURL: 'http://localhost:3000/auth/github/callback'
+    callbackURL: cbAddress
 },
 function (accessToken, refreshToken, profile, cb) {
     user.findOrCreate({
