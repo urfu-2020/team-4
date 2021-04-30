@@ -36,7 +36,7 @@ app.use(exSession({
     cookie: {
         httpOnly: true,
         // При деплое нужно будет изменить secure на true (возможно:) )
-        secure: false,
+        secure: true,
         maxAge: 72 * 60 * 60 * 1000
     }
 }));
@@ -82,41 +82,40 @@ app.use(express.static(publicDir));
 
 // Авторизация
 
-// const isAuth = (req, res, next) => {
-//     if (req.user) {
-//         next();
-//     } else {
-//         res.redirect('/login');
-//     }
-// };
+const isAuth = (req, res, next) => {
+    if (req.user) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+};
 
-app.get('/', (req, res) => {
-//     res.redirect('/contacts');
-    res.send(`${clientId} ${clientSecret} ${sessionSecret}`);
+app.get('/', isAuth, (req, res) => {
+    res.redirect('/contacts');
 });
 
-// app.get('/login', (req, res) => {
-//     if (req.user) {
-//         return res.redirect('/');
-//     }
-//     res.redirect('/auth/github');
-// });
+app.get('/login', (req, res) => {
+    if (req.user) {
+        return res.redirect('/');
+    }
+    res.redirect('/auth/github');
+});
 
-// app.get('/logout', (req, res) => {
-//     req.logOut();
-//     res.redirect('/login');
-// });
+app.get('/logout', (req, res) => {
+    req.logOut();
+    res.redirect('/login');
+});
 
-// app.get('/auth/github',
-//     passport.authenticate('github'));
+app.get('/auth/github',
+    passport.authenticate('github'));
 
-// app.get('/auth/github/callback',
-//     passport.authenticate('github', { failureRedirect: '/login' }),
-//     function (req, res) {
-//     // Successful authentication, redirect home.
-//         res.redirect('/');
-//     }
-// );
+app.get('/auth/github/callback',
+    passport.authenticate('github', { failureRedirect: '/login' }),
+    function (req, res) {
+    // Successful authentication, redirect home.
+        res.redirect('/');
+    }
+);
 // Авторизация всё
 
 
