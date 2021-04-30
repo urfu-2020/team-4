@@ -28,9 +28,6 @@ const clientId = process.env.GITHUB_CLIENT_ID;
 const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 const sessionSecret = process.env.EXPRESS_SESSION_SECRET;
 
-// eslint-disable-next-line no-console
-console.log(clientId, clientSecret, sessionSecret);
-
 // Настраиваем сессии
 app.use(exSession({
     secret: sessionSecret,
