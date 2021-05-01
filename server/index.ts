@@ -19,11 +19,7 @@ const githubPassport = require('passport-github');
 const app = express();
 const nextApp = nextjs({ dev: process.env.NODE_ENV !== 'production' });
 
-// Handlebars
-const exphbs = require('express-handlebars');
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
-app.set('view engine', 'handlebars');
-
+// Данные для авторизации
 const clientId = process.env.GITHUB_CLIENT_ID;
 const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 const sessionSecret = process.env.EXPRESS_SESSION_SECRET;

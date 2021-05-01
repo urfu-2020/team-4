@@ -18,7 +18,8 @@ export function list(_req: Request, res: Response): void {
         }
         // eslint-disable-next-line no-console
         console.log(allUsers);
-        res.render('contacts', { people: allUsers });
+        // res.render('contacts', { contacts: allUsers });
+        res.json({ contacts: allUsers });
     })
     // eslint-disable-next-line no-console
         .catch(err => console.log(err));
