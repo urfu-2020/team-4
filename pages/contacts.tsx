@@ -1,8 +1,9 @@
 /* eslint-disable no-invalid-this */
 
 import { Component, Fragment } from 'react';
-import { IUserData } from '../server/types';
+import Head from 'next/head';
 
+import { IUserData } from '../server/types';
 import Contacts from '../components/contacts';
 
 interface IContactsPageProps {
@@ -33,17 +34,16 @@ export default class ContactsPage extends Component<IContactsPageProps, IContact
     render(): JSX.Element {
         const { contacts, loading } = this.state;
 
-        if (loading) {
-            return <p>Loading...</p>;
-        }
-
-        if (!contacts.length) {
-            return <p>contacts not found!</p>;
-        }
-
         return (
             <Fragment>
-                <Contacts contacts={contacts}/>
+                <Head>
+                    <title>Контакты</title>
+                </Head>
+                {
+                    loading
+                        ? <p>Loading....</p>
+                        : <Contacts contacts={contacts}/>
+                }
             </Fragment>
         );
     }

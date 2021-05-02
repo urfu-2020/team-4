@@ -1,6 +1,7 @@
 /* eslint-disable no-invalid-this */
 
 import Link from 'next/link';
+import Head from 'next/head';
 import { NextPageContext } from 'next';
 import { Component, Fragment } from 'react';
 
@@ -59,25 +60,31 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
         }).then(this.fetchMessages);
     }
 
-    render() : JSX.Element {
+    private get content(): JSX.Element {
         const { interlocutor, interlocutorLoading, messages, messagesLoading } = this.state;
 
         if (interlocutorLoading) {
             return <p>Загрузка пользователя...</p>;
-        }
-
-        if (!interlocutor) {
+        } else if (!interlocutor) {
             return <p>Пользователь с таким id не найден!</p>;
         }
 
+        return <Chat
+            interlocutor={interlocutor}
+            messages={messages}
+            messagesLoading={messagesLoading}
+            onSubmit={this.handleSubmit}/>;
+    }
+
+    render() : JSX.Element {
+
         return (
             <Fragment>
+                <Head>
+                    <title>Сообщения</title>
+                </Head>
                 <Link as="/contacts" href="/contacts"><a>Назад</a></Link>
-                <Chat
-                    interlocutor={interlocutor}
-                    messages={messages}
-                    messagesLoading={messagesLoading}
-                    onSubmit={this.handleSubmit}/>
+                {this.content}
             </Fragment>
         );
     }

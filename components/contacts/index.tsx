@@ -1,30 +1,26 @@
-import Link from 'next/link';
+import { Component } from 'react';
 
 import { IUserData } from '../../server/types';
+import ContactCard from './contactCard';
 import styles from './index.module.css';
 
 
-interface IUsersProps {
+interface IContactsProps {
     contacts: IUserData[];
 }
 
-export default function Contacts({ contacts }: IUsersProps) : JSX.Element {
+export default class Contacts extends Component<IContactsProps> {
+    render() : JSX.Element {
+        const contacts = this.props.contacts;
 
-    return (
-        <ul className={styles.userList}>{
-            contacts.map((user) => {
-                return (
-                    <li className={styles.userCard} key={user.id}>
-                        <div className={styles.avatarContainer}>
-                            <img src={user.avatar} alt="avatar"
-                                className={styles.avatarImage}/>
-                        </div>
-                        <Link as={`/contacts/${user.id}`} href={`/contacts/${user.id}`}>
-                            <a className={styles.userName}>{user.nickname}</a>
-                        </Link>
-                    </li>
-                );
-            })
-        }</ul>
-    );
+        if (!contacts.length) {
+            return <p>contacts not found!</p>;
+        }
+
+        return (
+            <ul className={styles.userList}>
+                {contacts.map((user) => <ContactCard user={user}/>)}
+            </ul>
+        );
+    }
 }
