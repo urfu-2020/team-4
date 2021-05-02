@@ -1,5 +1,4 @@
-'use strict';
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 const packageJson = require('../package.json');
 
 module.exports = {
