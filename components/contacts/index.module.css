@@ -1,9 +1,9 @@
-.user-list {
+.userList {
   display: flex;
   flex-direction: column;
 }
 
-.user-card {
+.userCard {
   display: grid;
   grid-template:
     'avatar user-name' 30px
@@ -11,14 +11,14 @@
 
   width: 80%;
   height: 100px;
-  margin: 10px 0;
+  margin: 10px;
 
   border-radius: 10px;
 
   background-color: #a0bbff;
 }
 
-.user-card__avatar {
+.avatarContainer {
   overflow: hidden;
   align-self: flex-start;
   grid-area: avatar;
@@ -33,14 +33,14 @@
   background: #c0c0c0;
 }
 
-.user-card__avatar-image {
+.avatarImage {
   width: 100%;
   height: 100%;
 
   object-fit: cover;
 }
 
-.user-card__name {
+.userName {
   display: flex;
   align-items: center;
   grid-area: user-name;

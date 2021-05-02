@@ -1,4 +1,4 @@
-import App, { Container, AppContext, AppInitialProps } from 'next/app';
+import App, { AppContext, AppInitialProps } from 'next/app';
 
 import './app.css';
 
@@ -16,10 +16,6 @@ export default class MyApp extends App {
     render(): JSX.Element {
         const { Component, pageProps } = this.props;
 
-        return (
-            <Container>
-                <Component {...pageProps}/>
-            </Container>
-        );
+        return <Component {...pageProps}/>;
     }
 }

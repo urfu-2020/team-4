@@ -21,7 +21,8 @@
     "JSX": true
   },
   "env": {
-    "es6": true
+    "es6": true,
+    "browser": true
   },
   "rules": {
     "@typescript-eslint/no-unused-vars": [ 2, { "args": "none" }]

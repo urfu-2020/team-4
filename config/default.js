@@ -6,5 +6,5 @@ module.exports = {
     port: 3000,
 
     // Статичное содержимое раздаём из приложение через express.static
-    staticBasePath: '/'
+    staticBasePath: '/public'
 };

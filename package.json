@@ -12,7 +12,7 @@
     "build": "npm-run-all --parallel build:*",
     "build:ts": "tsc -p .",
     "build:next": "next build",
-    "build:static": "copyfiles --up 1 \"./components/**/*.css\" \"./pages/**/*.css\" dist/server/public",
+    "build:static": "copyfiles --up 1 \"./public/*\" dist/public",
     "start": "cross-env NODE_PATH=dist/server node dist/server",
     "test": "echo No tests yet && exit 0",
     "surge": "cross-env-shell surge -p ./dist/public -d $npm_package_name.surge.sh",

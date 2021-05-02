@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
-
-.chat-container {
+.chatContainer {
   display: grid;
   grid-template-rows: 1fr 5fr 1fr;
 
@@ -14,7 +12,7 @@
   border-radius: 5px;
 }
 
-.chat__header {
+.chatHeader {
   display: flex;
   flex-direction: row;
 
@@ -23,14 +21,36 @@
   margin: 0;
 }
 
-.chat__message-form {
-  display: flex;
-  flex-direction: row;
+.headerAvatarContainer {
+  overflow: hidden;
+  align-self: flex-start;
 
-  max-height: 50px;
+  width: 60px;
+  height: 60px;
+  margin: 5px;
+
+  border-radius: 100px;
+
+  background: #c0c0c0;
 }
 
-.chat__messages {
+.headerAvatarImage {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.headerUsername {
+  display: flex;
+  align-items: center;
+
+  margin-left: 10px;
+
+  font-size: 1.75em;
+}
+
+.messages {
   display: flex;
   overflow: auto;
   flex-direction: column;
@@ -40,8 +60,8 @@
   background-color: #6381de;
 }
 
-.my-message,
-.others-message {
+.myMessage,
+.othersMessage {
   justify-self: end;
 
   min-width: 20%;
@@ -56,15 +76,22 @@
   font-family: 'Roboto Condensed', sans-serif;
 }
 
-.others-message {
+.othersMessage {
   align-self: flex-start;
 }
 
-.my-message {
+.myMessage {
   align-self: flex-end;
 }
 
-.chat__message-form__input {
+.messageForm {
+  display: flex;
+  flex-direction: row;
+
+  max-height: 50px;
+}
+
+.messageFormInput {
   box-sizing: border-box;
 
   width: 100%;
@@ -80,41 +107,12 @@
   flex-grow: 1;
 
   height: auto;
-  margin-right: 5px;
+  margin: 5px;
 }
 
-.send-message-button {
+.sendMessageButton {
   align-self: center;
   justify-self: flex-end;
 
   margin: 5px;
-}
-
-.chat__user-avatar {
-  overflow: hidden;
-  align-self: flex-start;
-
-  width: 60px;
-  height: 60px;
-  margin: 5px;
-
-  border-radius: 100px;
-
-  background: #c0c0c0;
-}
-
-.chat__avatar-image {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-.chat__username {
-  display: flex;
-  align-items: center;
-
-  margin-left: 10px;
-
-  font-size: 1.75em;
 }
