@@ -1,3 +1,4 @@
 require('dotenv/config');
 require('./../server/databaseConfig/database.ts');
 require('./../server/index.ts');
+require('./../server/controllers/auth.ts');

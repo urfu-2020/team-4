@@ -77,44 +77,6 @@ if (config.get('debug')) {
 const publicDir = path.join(__dirname, 'public');
 app.use(express.static(publicDir));
 
-// Авторизация
-
-const isAuth = (req, res, next) => {
-    if (req.user) {
-        next();
-    } else {
-        res.redirect('/login');
-    }
-};
-
-app.get('/', isAuth, (req, res) => {
-    res.redirect('/contacts');
-});
-
-app.get('/login', (req, res) => {
-    if (req.user) {
-        return res.redirect('/');
-    }
-    res.redirect('/auth/github');
-});
-
-app.get('/logout', (req, res) => {
-    req.logOut();
-    res.redirect('/login');
-});
-
-app.get('/auth/github',
-    passport.authenticate('github'));
-
-app.get('/auth/github/callback',
-    passport.authenticate('github', { failureRedirect: '/login' }),
-    function (req, res) {
-    // Successful authentication, redirect home.
-        res.redirect('/');
-    }
-);
-// Авторизация всё
-
 
 app.use(bodyParser.json());
 
@@ -126,7 +88,7 @@ app.use((err: Error, _req: Request, _res: Response, next: Next) => {
 
 app.use(render(nextApp));
 
-routes(app);
+routes(app, passport);
 
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
 app.use((err: Error, _req: Request, res: Response, _next: Next) => {
