@@ -1,18 +1,23 @@
 import { Request, Response } from 'express';
-import User from '../models/user';
+import { user } from '../models/user';
 
 export function list(_req: Request, res: Response): void {
     // eslint-disable-next-line no-warning-comments
-    // TODO список всех пользователей
-    const contacts: User[] = [];
-
-    res.json(contacts);
+    // Список всех пользователей
+    user.findAll().then(users => {
+        res.json(users);
+    })
+    // eslint-disable-next-line no-console
+        .catch(err => console.log(err));
 }
 
 export function item(req: Request, res: Response): void {
     // eslint-disable-next-line no-warning-comments
-    // TODO конкретный пользователь
+    // Конкретный пользователь
     const { id } = req.params;
-
-    res.json({ id });
+    user.findOne({ where: { githubid: id } }).then(usr => {
+        res.json(usr);
+    })
+        // eslint-disable-next-line no-console
+        .catch(err => console.log(err));
 }
