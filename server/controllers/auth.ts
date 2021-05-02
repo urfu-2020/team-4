@@ -51,8 +51,7 @@ export default (app: Application): void => {
         })
         // eslint-disable-next-line no-console
             .then(usr => console.log(usr))
-        // eslint-disable-next-line no-console
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
         cb(null, profile);
     }
     ));

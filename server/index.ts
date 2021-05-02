@@ -42,7 +42,7 @@ nextApp.prepare().then(() => {
         return handle(req, res);
     });
 
-    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
+    // eslint-disable-next-line no-unused-vars
     server.use((err: Error, _req: Request, res: Response, _next: Next) => {
         console.error(err.stack);
 
