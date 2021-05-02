@@ -10,65 +10,12 @@ import 'isomorphic-fetch';
 
 import render from './middlewares/render';
 import routes from './routes';
+import auth from 'controllers/auth';
 
-const exSession = require('express-session');
 const passport = require('passport');
-import { user } from './models/user';
-const githubPassport = require('passport-github');
 
 const app = express();
 const nextApp = nextjs({ dev: process.env.NODE_ENV !== 'production' });
-
-// Данные для авторизации
-const clientId = process.env.GITHUB_CLIENT_ID;
-const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-const sessionSecret = process.env.EXPRESS_SESSION_SECRET;
-
-// Настраиваем сессии
-app.use(exSession({
-    secret: sessionSecret,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true,
-        // При деплое нужно будет изменить secure на true (возможно:) )
-        secure: false,
-        maxAge: 72 * 60 * 60 * 1000
-    }
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser(function (usr, cb) {
-    cb(null, usr.id);
-});
-
-passport.deserializeUser(function (id, cb) {
-    cb(null, id);
-});
-
-// Авторизация
-const GitHubStrategy = githubPassport.Strategy;
-const cbAddress = process.env.AUTH_CB_ADDRESS;
-
-passport.use(new GitHubStrategy({
-    clientID: clientId,
-    clientSecret: clientSecret,
-    callbackURL: cbAddress
-},
-function (accessToken, refreshToken, profile, cb) {
-    user.findOrCreate({
-        where: { githubid: profile._json.login }
-    })
-        // eslint-disable-next-line no-console
-        .then(usr => console.log(usr))
-        // eslint-disable-next-line no-console
-        .catch(err => console.log(err));
-    cb(null, profile);
-}
-));
-// Дальше будет ещё немного авторизации
 
 if (config.get('debug')) {
     app.use(morgan('dev'));
@@ -88,6 +35,7 @@ app.use((err: Error, _req: Request, _res: Response, next: Next) => {
 
 app.use(render(nextApp));
 
+auth(app);
 routes(app, passport);
 
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
