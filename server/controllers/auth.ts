@@ -49,12 +49,13 @@ export default (app: Application): void => {
         user.findOrCreate({
             where: { githubid: profile._json.login }
         })
-        // eslint-disable-next-line no-console
-            .then(usr => console.log(usr))
-            .catch(err => console.error(err));
-        cb(null, profile);
+            .then(() => {
+                cb(null, profile);
+            })
+            .catch(err => {
+                console.error(err);
+                cb(err, null);
+            });
     }
     ));
-
-
 };

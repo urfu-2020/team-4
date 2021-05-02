@@ -7,12 +7,8 @@ export function list(_req: Request, res: Response): void {
         for (const usr of users) {
             const nickname = usr.getDataValue('githubid');
             const avatar = `https://avatars.githubusercontent.com/${nickname}`;
-            // eslint-disable-next-line no-console
-            console.log(nickname, avatar);
             allUsers.push({ nickname, avatar });
         }
-        // eslint-disable-next-line no-console
-        console.log(allUsers);
         res.json({ contacts: allUsers });
     })
         .catch(err => console.error(err));
