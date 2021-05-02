@@ -1,14 +1,22 @@
 import { Application } from 'express';
 
-
-import { error404 } from './controllers/errors';
 import { item, list } from './controllers/contacts';
 import { PassportStatic } from 'passport';
+import { NextServer } from 'next/dist/server/next';
 
-export default (app: Application, passport: PassportStatic): void => {
-    app.get('/contacts', list);
+export default (server: Application, passport: PassportStatic, nextApp: NextServer): void => {
+    const isAuthForApi = (req, res, next) => {
+        if (req.user) {
+            next();
+        } else {
+            const error = { code: 401, message: 'unauthorized user' };
+            res.status(401).json(error);
+        }
+    };
 
-    app.get('/contacts/:id', item);
+    server.get('/api/contacts/:id', isAuthForApi, item);
+
+    server.get('/api/contacts', isAuthForApi, list);
 
     const isAuth = (req, res, next) => {
         if (req.user) {
@@ -18,32 +26,38 @@ export default (app: Application, passport: PassportStatic): void => {
         }
     };
 
-    app.get('/', isAuth, (req, res) => {
+    server.get('/', (req, res) => {
         res.redirect('/contacts');
     });
 
-    app.get('/login', (req, res) => {
+    server.get('/contacts', isAuth, (req, res) => {
+        return nextApp.render(req, res, '/contacts');
+    });
+
+    server.get('/contacts/:id', isAuth, (req, res) => {
+        return nextApp.render(req, res, '/chat', { ...req.query, id: req.params.id });
+    });
+
+    server.get('/login', (req, res) => {
         if (req.user) {
             return res.redirect('/');
         }
         res.redirect('/auth/github');
     });
 
-    app.get('/logout', (req, res) => {
+    server.get('/logout', (req, res) => {
         req.logOut();
         res.redirect('/login');
     });
 
-    app.get('/auth/github',
+    server.get('/auth/github',
         passport.authenticate('github'));
 
-    app.get('/auth/github/callback',
+    server.get('/auth/github/callback',
         passport.authenticate('github', { failureRedirect: '/login' }),
         function (req, res) {
             // Successful authentication, redirect home.
             res.redirect('/');
         }
     );
-
-    app.all('*', error404);
 };
