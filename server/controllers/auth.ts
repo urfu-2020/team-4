@@ -28,12 +28,12 @@ export default (app: Application): void => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.serializeUser(function (usr, cb) {
-        cb(null, usr.id);
+    passport.serializeUser(function (profile, cb) {
+        cb(null, profile);
     });
 
-    passport.deserializeUser(function (id, cb) {
-        cb(null, id);
+    passport.deserializeUser(function (profile, cb) {
+        cb(null, profile);
     });
 
     // Авторизация
