@@ -26,7 +26,7 @@
     "heroku:open": "heroku open",
     "start:docker": "docker build --tag kilogram:0.0-local . && docker run --rm -d -p 80:80 kilogram:0.0-local",
     "lint": "npm-run-all --parallel lint:*",
-    "lint:css": "stylelint \"components/**/*.css\"",
+    "lint:css": "stylelint \"components/**/*.css\" \"public/**/*.css\"",
     "lint:js": "eslint . --ext .ts,.js,.tsx",
     "format": "prettier --write \"**/*.{js,css,json,yaml,yml,md}\""
   },

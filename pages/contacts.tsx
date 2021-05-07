@@ -5,6 +5,7 @@ import Head from 'next/head';
 
 import { IUserData } from '../server/types';
 import Contacts from '../components/contacts';
+import Loader from '../components/loader';
 
 interface IContactsPageProps {
     contacts: IUserData[];
@@ -41,7 +42,7 @@ export default class ContactsPage extends Component<IContactsPageProps, IContact
                 </Head>
                 {
                     loading
-                        ? <p>Loading....</p>
+                        ? <Loader/>
                         : <Contacts contacts={contacts}/>
                 }
             </Fragment>
