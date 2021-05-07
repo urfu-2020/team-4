@@ -41,6 +41,7 @@
   "homepage": "https://github.com/urfu-2020/team-4#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "classnames": "^2.2.6",
     "config": "^3.3.6",
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
