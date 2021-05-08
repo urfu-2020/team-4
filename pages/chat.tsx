@@ -1,11 +1,13 @@
 /* eslint-disable no-invalid-this */
 
 import Head from 'next/head';
+import Error from 'next/error';
 import { NextPageContext } from 'next';
 import { Component } from 'react';
 
 import { IMessageData, IUserData } from '../server/types';
 import Chat from '../components/chat';
+import Loader from '../components/loader';
 
 interface IChatPageProps {
     companionId: string;
@@ -37,6 +39,7 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
     }
 
     state: IChatPageState = {
+        owner: undefined,
         companion: undefined,
         companionLoading: true,
         messages: [],
@@ -47,17 +50,6 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
         this.fetchCompanion();
         this.fetchMessages();
         this.setState({ owner: { id: this.props.ownerId, nickname: '', avatar: '' } });
-        // const owner = this.getOwnerFromLocalStorage();
-        // if (owner.id && owner.id === this.props.ownerId && owner.avatar && owner.nickname) {
-        //     this.setState({
-        //         owner: { id: owner.id, nickname: owner.nickname, avatar: owner.avatar }
-        //     });
-        // } else {
-        //     this.fetchContact(this.props.ownerId)
-        //         .then((user) => {
-        //             this.setState({ owner: user });
-        //         });
-        // }
 
         this.fetchContact(this.props.ownerId)
             .then((user) => {
@@ -65,19 +57,12 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
             });
     }
 
-    // getOwnerFromLocalStorage(): IUserData {
-    //     const ownerId: string | null = localStorage.getItem('owner-id');
-    //     const nickname: string | null = localStorage.getItem('owner-nickname');
-    //     const avatar: string | null = localStorage.getItem('owner-avatar');
-    //
-    //     return { id: ownerId, nickname, avatar };
-    // }
-
     fetchCompanion = (): void => {
         this.fetchContact(this.props.companionId)
             .then((companion) => this.setState({ companion, companionLoading: false }));
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fetchContact = (id: string): Promise<any> => {
         return fetch(`/api/contacts/${id}`)
             .then((response) => response.json());
@@ -109,9 +94,9 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
         const { owner, companion, companionLoading, messages, messagesLoading } = this.state;
 
         if (companionLoading) {
-            return <p>Загрузка пользователя...</p>;
+            return <Loader/>;
         } else if (!companion) {
-            return <p>Пользователь с таким id не найден!</p>;
+            return <Error statusCode={404}/>;
         }
 
         return <Chat

@@ -1,6 +1,9 @@
 import { IMessageData, IUserData } from '../../server/types';
 import styles from './index.module.css';
 import Message from './message';
+import Loader from '../loader';
+import { useEffect, useRef } from 'react';
+
 
 interface IMessagesProps {
     owner: IUserData
@@ -10,8 +13,18 @@ interface IMessagesProps {
 
 export default function Chatbox({ owner, loading, messages }: IMessagesProps) : JSX.Element {
     if (loading) {
-        return <p className={styles.messages}>Загрузка сообщений</p>;
+        return <Loader/>;
     }
+
+    const messagesEndRef = useRef(null);
+    const scrollToBottom = () => {
+        // @ts-ignore
+        messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
+    };
+    useEffect(scrollToBottom, [messages]);
+
+    // @ts-ignore
+    const refElement = <div ref={messagesEndRef} />;
 
     return (
         <section className={styles.chatbox}>
@@ -21,6 +34,7 @@ export default function Chatbox({ owner, loading, messages }: IMessagesProps) : 
                         return <Message owner={owner} message={message} key={message.id}/>;
                     })
                 }
+                {refElement}
             </section>
         </section>
     );

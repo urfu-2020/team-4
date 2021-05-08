@@ -3,8 +3,9 @@
   align-items: center;
   flex-direction: column;
   height: 100vh;
-  width: 80%;
+  width: 100%;
   min-width: 300px;
+  max-width: 1000px;
   margin: auto;
   color: rgb(54, 54, 54);
   box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
@@ -54,7 +55,6 @@
 
 .chatWindow {
   flex: auto;
-  /*background: #e7e9ee;*/
   overflow: auto;
 }
 
@@ -66,7 +66,7 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
 }
 
-.chatInput {
+.messageInput {
   flex-grow: 1;
   resize: none;
   outline: 0 none;
@@ -76,14 +76,19 @@
 }
 
 .submitButton {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.25);
   outline: 0 none;
   border: none;
   width: 60px;
   transition: all 0.15s ease-in-out;
 }
 
-.msgContainer {
+.submitButton:enabled {
+  color: rgba(0, 0, 0, 0.75);
+  background: #dcf5e8;
+}
+
+.messageContainer {
   position: relative;
   display: inline-block;
   width: 100%;
@@ -91,11 +96,11 @@
   padding: 0;
 }
 
-.msgContainer:first-child {
+.messageContainer:first-child {
   margin-top: 10px;
 }
 
-.msgBox {
+.messageBox {
   display: flex;
   background: #efefef;
   padding: 10px 10px 0 10px;
@@ -106,7 +111,7 @@
   box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0, 0, 0, .24);
 }
 
-.userImg {
+.avatar {
   display: inline-block;
   border-radius: 50%;
   height: 40px;
@@ -115,25 +120,22 @@
   margin: 0 10px 10px 0;
 }
 
-.flr {
+.messageContent {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   width: calc(100% - 50px);
 }
 
-.messages {
+.messageText {
   flex: 1 0 auto;
-}
-
-.msg {
   display: inline-block;
   font-size: 11pt;
   line-height: 13pt;
   margin: 0 0 4px 0;
 }
 
-.msg:first-of-type {
+.messageText:first-of-type {
   margin-top: 8px;
 }
 
@@ -147,25 +149,25 @@
   margin-right: 3px;
 }
 
-.posttime {
+.postTime {
   margin-left: 3px;
 }
 
-.msgSelf .msgBox {
+.messageSelf .messageBox {
   border-radius: 6px 0 0 6px;
   background: #dcf5e8;
   float: right;
   flex-direction: row-reverse
 }
 
-.msgSelf .userImg {
+.messageSelf .avatar {
   margin: 0 0 10px 10px;
 }
 
-.msgSelf .msg {
+.messageSelf .messageText {
   text-align: right;
 }
 
-.msgSelf .timestamp {
+.messageSelf .timestamp {
   text-align: right;
 }

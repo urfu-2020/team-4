@@ -13,7 +13,7 @@ export default function ChatInput(
 
     return (
         <form className={styles.chatForm} onSubmit={handleSubmit}>
-            <textarea className={styles.chatInput} autoComplete="on"
+            <textarea className={styles.messageInput} autoComplete="on"
                 placeholder="Type a message"
                 onChange={handleTextChange}
             />

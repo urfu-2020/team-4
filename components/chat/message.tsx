@@ -8,24 +8,24 @@ interface IMessageProps {
 }
 
 export default function Message({ owner, message }: IMessageProps): JSX.Element {
-    const cls = [styles.msgContainer];
+    const cls = [styles.messageContainer];
     if (message.author.id === owner.id) {
-        cls.push(styles.msgSelf);
+        cls.push(styles.messageSelf);
     }
     const timestamp = message.timestamp.toLocaleTimeString().slice(0, -3) + ' ' +
         message.timestamp.toLocaleDateString();
 
     return (
         <article className={classNames(...cls)}>
-            <div className={styles.msgBox}>
-                <img className={styles.userImg} src={message.author.avatar} alt="avatar"/>
-                <div className={styles.flr}>
-                    <div className={styles.messages}>
-                        <p className={styles.msg}>{message.text}</p>
+            <div className={styles.messageBox}>
+                <img className={styles.avatar} src={message.author.avatar} alt="avatar"/>
+                <div className={styles.messageContent}>
+                    <div className={styles.messageText}>
+                        <p className={styles.messageText}>{message.text}</p>
                     </div>
                     <span className={styles.timestamp}>
                         <span className={styles.username}>{message.author.nickname}</span>&bull;
-                        <span className={styles.posttime}>{timestamp}</span>
+                        <span className={styles.postTime}>{timestamp}</span>
                     </span>
                 </div>
             </div>

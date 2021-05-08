@@ -8,18 +8,19 @@ import Chatbox from './chatbox';
 import ChatInput from './form';
 import styles from './index.module.css';
 
-interface IPostMessageData {
+interface IInputData {
     text: string
 }
+
 interface IChatProps {
-    onSubmit(message: IPostMessageData): void
+    onSubmit(message: IInputData): void
     owner: IUserData
     chatName: string
     messages: IMessageData[]
     messagesLoading: boolean
 }
 
-export default class Chat extends Component<IChatProps, IPostMessageData> {
+export default class Chat extends Component<IChatProps, IInputData> {
     state: { text: string } = {
         text: ''
     };
