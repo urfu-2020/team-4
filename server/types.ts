@@ -5,5 +5,8 @@ export interface IUserData {
 }
 
 export interface IMessageData {
+    id: string
     text: string
+    timestamp: Date
+    author: IUserData
 }

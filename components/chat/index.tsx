@@ -4,19 +4,23 @@ import { ChangeEvent, Component } from 'react';
 
 import { IMessageData, IUserData } from '../../server/types';
 import ChatHeader from './header';
-import Messages from './messages';
-import MessageForm from './form';
+import Chatbox from './chatbox';
+import ChatInput from './form';
 import styles from './index.module.css';
 
+interface IPostMessageData {
+    text: string
+}
 interface IChatProps {
-    onSubmit(message: IMessageData): void
-    interlocutor: IUserData
+    onSubmit(message: IPostMessageData): void
+    owner: IUserData
+    chatName: string
     messages: IMessageData[]
     messagesLoading: boolean
 }
 
-export default class Chat extends Component<IChatProps, IMessageData> {
-    state: IMessageData = {
+export default class Chat extends Component<IChatProps, IPostMessageData> {
+    state: { text: string } = {
         text: ''
     };
 
@@ -32,15 +36,15 @@ export default class Chat extends Component<IChatProps, IMessageData> {
 
     render(): JSX.Element {
         const { text } = this.state;
-        const { interlocutor, messages, messagesLoading } = this.props;
+        const { owner, chatName, messages, messagesLoading } = this.props;
 
         const isButtonDisabled = !text;
 
         return (
             <div className={styles.chatContainer}>
-                <ChatHeader interlocutor={interlocutor}/>
-                <Messages loading={messagesLoading} messages={messages} />
-                <MessageForm
+                <ChatHeader chatName={chatName}/>
+                <Chatbox owner={owner} loading={messagesLoading} messages={messages}/>
+                <ChatInput
                     handleSubmit={this.handleSubmit}
                     handleTextChange={this.handleTextChange}
                     isButtonDisabled={isButtonDisabled}

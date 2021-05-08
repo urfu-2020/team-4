@@ -1,116 +1,171 @@
 .chatContainer {
-  display: grid;
-  grid-template-rows: 1fr 5fr 1fr;
-
-  box-sizing: border-box;
-
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
   width: 80%;
-  height: 80%;
+  min-width: 300px;
   margin: auto;
-
-  border: #1e90ff solid 2px;
-  border-radius: 5px;
+  color: rgb(54, 54, 54);
+  box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
 }
 
 .chatHeader {
   display: flex;
-  flex-direction: row;
-
-  width: auto;
-  height: 70px;
-  margin: 0;
-}
-
-.headerAvatarContainer {
-  overflow: hidden;
-  align-self: flex-start;
-
-  width: 60px;
-  height: 60px;
-  margin: 5px;
-
-  border-radius: 100px;
-
-  background: #c0c0c0;
-}
-
-.headerAvatarImage {
   width: 100%;
-  height: 100%;
-
-  object-fit: cover;
+  height: 70px;
+  align-items: center;
+  background: #dcf5e8;
+  border-bottom: #ccd4d0 solid 1px;
+  box-sizing: border-box;
 }
 
-.headerUsername {
+.navigateBefore {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.chatTitle {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+  flex-grow: 1;
+  cursor: default;
+}
+
+.chatbox {
+  width: 100%;
+  min-width: 300px;
+  height: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-  margin-left: 10px;
+.chatWindow::-webkit-scrollbar {
+  width: 3px;
+}
 
-  font-size: 1.75em;
+.chatWindow::-webkit-scrollbar-thumb {
+  background-color: #b8bcc7;
+  border-radius: 2px;
+}
+
+.chatWindow {
+  flex: auto;
+  /*background: #e7e9ee;*/
+  overflow: auto;
+}
+
+.chatForm {
+  display: flex;
+  flex: 0 0 auto;
+  height: 100px;
+  width: 100%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+}
+
+.chatInput {
+  flex-grow: 1;
+  resize: none;
+  outline: 0 none;
+  border: none;
+  padding: 10px;
+  font-family: 'Lato', 'Roboto', sans-serif;
+}
+
+.submitButton {
+  color: rgba(0, 0, 0, 0.5);
+  outline: 0 none;
+  border: none;
+  width: 60px;
+  transition: all 0.15s ease-in-out;
+}
+
+.msgContainer {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.msgContainer:first-child {
+  margin-top: 10px;
+}
+
+.msgBox {
+  display: flex;
+  background: #efefef;
+  padding: 10px 10px 0 10px;
+  border-radius: 0 6px 6px 0;
+  max-width: 80%;
+  width: auto;
+  float: left;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0, 0, 0, .24);
+}
+
+.userImg {
+  display: inline-block;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  background: #dcf5e8;
+  margin: 0 10px 10px 0;
+}
+
+.flr {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 50px);
 }
 
 .messages {
-  display: flex;
-  overflow: auto;
-  flex-direction: column;
-
-  width: 100%;
-
-  background-color: #6381de;
+  flex: 1 0 auto;
 }
 
-.myMessage,
-.othersMessage {
-  justify-self: end;
-
-  min-width: 20%;
-  max-width: 80%;
-  margin: 4px;
-
-  border-radius: 3px;
-
-  background-color: #ffffff;
-  color: #081e5f;
+.msg {
+  display: inline-block;
+  font-size: 11pt;
+  line-height: 13pt;
+  margin: 0 0 4px 0;
 }
 
-.othersMessage {
-  align-self: flex-start;
+.msg:first-of-type {
+  margin-top: 8px;
 }
 
-.myMessage {
-  align-self: flex-end;
+.timestamp {
+  color: rgba(0, 0, 0, .38);
+  font-size: 8pt;
+  margin-bottom: 10px;
 }
 
-.messageForm {
-  display: flex;
-  flex-direction: row;
-
-  max-height: 50px;
+.username {
+  margin-right: 3px;
 }
 
-.messageFormInput {
-  box-sizing: border-box;
-
-  width: 100%;
-  height: 100%;
-  margin: 2px;
-
-  border: #000000 solid 1px;
-
-  resize: none;
+.posttime {
+  margin-left: 3px;
 }
 
-.chat {
-  flex-grow: 1;
-
-  height: auto;
-  margin: 5px;
+.msgSelf .msgBox {
+  border-radius: 6px 0 0 6px;
+  background: #dcf5e8;
+  float: right;
+  flex-direction: row-reverse
 }
 
-.sendMessageButton {
-  align-self: center;
-  justify-self: flex-end;
+.msgSelf .userImg {
+  margin: 0 0 10px 10px;
+}
 
-  margin: 5px;
+.msgSelf .msg {
+  text-align: right;
+}
+
+.msgSelf .timestamp {
+  text-align: right;
 }

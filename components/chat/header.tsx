@@ -1,20 +1,21 @@
-import { IUserData } from '../../server/types';
 import styles from './index.module.css';
+import Link from 'next/link';
+import classNames from 'classnames';
 
 interface IChatHeaderProps {
-    interlocutor: IUserData
+    chatName: string
 }
 
-export default function ChatHeader({ interlocutor }: IChatHeaderProps) : JSX.Element {
+export default function ChatHeader({ chatName }: IChatHeaderProps) : JSX.Element {
+    const backClasses = classNames('material-icons', styles.navigateBefore);
+
     return (
         <div className={styles.chatHeader}>
-            <div className={styles.headerAvatarContainer}>
-                <img src={interlocutor.avatar} alt="avatar"
-                    className={styles.headerAvatarImage}/>
-            </div>
-            <div className={styles.headerUsername}>
-                {interlocutor.nickname}
-            </div>
+            <Link as="/contacts" href="/contacts">
+                <i className={backClasses}>navigate_before</i>
+            </Link>
+
+            <span className={styles.chatTitle}>{chatName}</span>
         </div>
     );
 }

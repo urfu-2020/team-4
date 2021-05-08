@@ -25,6 +25,7 @@
     "browser": true
   },
   "rules": {
-    "@typescript-eslint/no-unused-vars": [ 2, { "args": "none" }]
+    "@typescript-eslint/no-unused-vars": [ 2, { "args": "none" }],
+    "@typescript-eslint/ban-ts-comment": "off"
   }
 }

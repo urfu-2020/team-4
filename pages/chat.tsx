@@ -1,55 +1,100 @@
 /* eslint-disable no-invalid-this */
 
-import Link from 'next/link';
 import Head from 'next/head';
 import { NextPageContext } from 'next';
-import { Component, Fragment } from 'react';
+import { Component } from 'react';
 
 import { IMessageData, IUserData } from '../server/types';
 import Chat from '../components/chat';
 
 interface IChatPageProps {
-    id: string;
+    companionId: string;
+    ownerId: string;
 }
 
 interface IChatPageState {
-    interlocutor?: IUserData;
-    interlocutorLoading: boolean;
+    owner?: IUserData;
+    companion?: IUserData;
+    companionLoading: boolean;
     messages: IMessageData[];
     messagesLoading: boolean;
 }
 
 export default class ChatPage extends Component<IChatPageProps, IChatPageState> {
-    static async getInitialProps({ query }: NextPageContext): Promise<IChatPageProps> {
-        let id = '';
+    static async getInitialProps({ query, req }: NextPageContext): Promise<IChatPageProps> {
+        let companionId;
         if (query.id) {
-            id = query.id as string;
+            companionId = query.id as string;
         }
 
-        return { id };
+        let ownerId;
+        if (req && Object.prototype.hasOwnProperty.call(req, 'user')) {
+            // @ts-ignore
+            ownerId = req.user as string;
+        }
+
+        return { ownerId, companionId };
     }
 
     state: IChatPageState = {
-        interlocutor: undefined,
-        interlocutorLoading: true,
+        companion: undefined,
+        companionLoading: true,
         messages: [],
         messagesLoading: true
     };
 
-    componentDidMount() : void {
-        this.fetchInterlocutor();
+    componentDidMount(): void {
+        this.fetchCompanion();
+        this.fetchMessages();
+        this.setState({ owner: { id: this.props.ownerId, nickname: '', avatar: '' } });
+        // const owner = this.getOwnerFromLocalStorage();
+        // if (owner.id && owner.id === this.props.ownerId && owner.avatar && owner.nickname) {
+        //     this.setState({
+        //         owner: { id: owner.id, nickname: owner.nickname, avatar: owner.avatar }
+        //     });
+        // } else {
+        //     this.fetchContact(this.props.ownerId)
+        //         .then((user) => {
+        //             this.setState({ owner: user });
+        //         });
+        // }
+
+        this.fetchContact(this.props.ownerId)
+            .then((user) => {
+                this.setState({ owner: user });
+            });
     }
 
-    fetchInterlocutor = (): void => {
-        fetch(`/api/contacts/${this.props.id}`)
-            .then((response) => response.json())
-            .then((interlocutor) => this.setState({ interlocutor, interlocutorLoading: false }));
+    // getOwnerFromLocalStorage(): IUserData {
+    //     const ownerId: string | null = localStorage.getItem('owner-id');
+    //     const nickname: string | null = localStorage.getItem('owner-nickname');
+    //     const avatar: string | null = localStorage.getItem('owner-avatar');
+    //
+    //     return { id: ownerId, nickname, avatar };
+    // }
+
+    fetchCompanion = (): void => {
+        this.fetchContact(this.props.companionId)
+            .then((companion) => this.setState({ companion, companionLoading: false }));
+    }
+
+    fetchContact = (id: string): Promise<any> => {
+        return fetch(`/api/contacts/${id}`)
+            .then((response) => response.json());
     }
 
     fetchMessages = (): void => {
         fetch('/api/messages')
             .then((response) => response.json())
-            .then((messages) => this.setState({ messages, messagesLoading: false }));
+            .then((response) => this.setState({
+                messages: response.messages
+            }))
+            .then(() => {
+                for (const message of this.state.messages) {
+                    message.timestamp = new Date(message.timestamp);
+                }
+            })
+            .then(() => this.setState({ messagesLoading: false }));
     }
 
     handleSubmit = (message: IMessageData): void => {
@@ -61,31 +106,32 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
     }
 
     private get content(): JSX.Element {
-        const { interlocutor, interlocutorLoading, messages, messagesLoading } = this.state;
+        const { owner, companion, companionLoading, messages, messagesLoading } = this.state;
 
-        if (interlocutorLoading) {
+        if (companionLoading) {
             return <p>Загрузка пользователя...</p>;
-        } else if (!interlocutor) {
+        } else if (!companion) {
             return <p>Пользователь с таким id не найден!</p>;
         }
 
         return <Chat
-            interlocutor={interlocutor}
+            owner={owner}
+            chatName={companion.nickname}
             messages={messages}
             messagesLoading={messagesLoading}
             onSubmit={this.handleSubmit}/>;
     }
 
-    render() : JSX.Element {
-
+    render(): JSX.Element {
         return (
-            <Fragment>
+            <div>
                 <Head>
                     <title>Сообщения</title>
+                    <link rel="stylesheet"
+                        href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 </Head>
-                <Link as="/contacts" href="/contacts"><a>Назад</a></Link>
                 {this.content}
-            </Fragment>
+            </div>
         );
     }
 }
