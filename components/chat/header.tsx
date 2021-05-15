@@ -7,12 +7,12 @@ interface IChatHeaderProps {
 }
 
 export default function ChatHeader({ chatName }: IChatHeaderProps) : JSX.Element {
-    const backClasses = classNames('material-icons', styles.navigateBefore);
+    const iconBackClasses = classNames('material-icons', styles.navigateBefore);
 
     return (
         <div className={styles.chatHeader}>
             <Link as="/contacts" href="/contacts">
-                <i className={backClasses}>navigate_before</i>
+                <i className={iconBackClasses}>navigate_before</i>
             </Link>
 
             <span className={styles.chatTitle}>{chatName}</span>

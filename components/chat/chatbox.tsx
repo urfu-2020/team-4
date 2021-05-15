@@ -4,7 +4,6 @@ import Message from './message';
 import Loader from '../loader';
 import { useEffect, useRef } from 'react';
 
-
 interface IMessagesProps {
     owner: IUserData
     loading: boolean
@@ -18,12 +17,10 @@ export default function Chatbox({ owner, loading, messages }: IMessagesProps) : 
 
     const messagesEndRef = useRef(null);
     const scrollToBottom = () => {
-        // @ts-ignore
         messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
     };
     useEffect(scrollToBottom, [messages]);
 
-    // @ts-ignore
     const refElement = <div ref={messagesEndRef} />;
 
     return (

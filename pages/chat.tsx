@@ -3,63 +3,56 @@
 import Head from 'next/head';
 import Error from 'next/error';
 import { NextPageContext } from 'next';
-import { Component } from 'react';
+import { Component, Fragment } from 'react';
 
-import { IMessageData, IUserData } from '../server/types';
+import { IChatData, IMessageData, IUserData } from '../server/types';
 import Chat from '../components/chat';
 import Loader from '../components/loader';
 
 interface IChatPageProps {
-    companionId: string;
+    chatId?: string;
     ownerId: string;
 }
 
 interface IChatPageState {
     owner?: IUserData;
-    companion?: IUserData;
-    companionLoading: boolean;
+    chat?: IChatData;
+    chatLoading: boolean;
     messages: IMessageData[];
     messagesLoading: boolean;
 }
 
 export default class ChatPage extends Component<IChatPageProps, IChatPageState> {
     static async getInitialProps({ query, req }: NextPageContext): Promise<IChatPageProps> {
-        let companionId;
-        if (query.id) {
-            companionId = query.id as string;
-        }
-
         let ownerId;
         if (req && Object.prototype.hasOwnProperty.call(req, 'user')) {
             // @ts-ignore
             ownerId = req.user as string;
         }
 
-        return { ownerId, companionId };
+        return { ownerId, chatId: query.id as string };
     }
 
     state: IChatPageState = {
         owner: undefined,
-        companion: undefined,
-        companionLoading: true,
+        chat: undefined,
+        chatLoading: true,
         messages: [],
         messagesLoading: true
     };
 
     componentDidMount(): void {
-        this.fetchCompanion();
+        this.fetchChat();
         this.fetchMessages();
-        this.setState({ owner: { id: this.props.ownerId, nickname: '', avatar: '' } });
-
-        this.fetchContact(this.props.ownerId)
-            .then((user) => {
-                this.setState({ owner: user });
-            });
+        this.fetchOwner();
     }
 
-    fetchCompanion = (): void => {
-        this.fetchContact(this.props.companionId)
-            .then((companion) => this.setState({ companion, companionLoading: false }));
+    fetchOwner = (): void => {
+        this.setState({ owner: { id: this.props.ownerId, nickname: '', avatar: '' } });
+        this.fetchContact(this.props.ownerId)
+            .then((response) => {
+                this.setState({ owner: response.user });
+            });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,18 +61,30 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
             .then((response) => response.json());
     }
 
+    fetchChat = (): void => {
+        fetch(`/api/chat/${this.props.chatId}`)
+            .then((response) => response.json())
+            .then((response) => this.setState({
+                chat: response.chat,
+                chatLoading: false
+            }));
+    }
+
     fetchMessages = (): void => {
         fetch('/api/messages')
             .then((response) => response.json())
-            .then((response) => this.setState({
-                messages: response.messages
-            }))
-            .then(() => {
-                for (const message of this.state.messages) {
-                    message.timestamp = new Date(message.timestamp);
-                }
+            .then((response) => {
+                return response.messages.map((message) => ({
+                    id: message.id,
+                    text: message.text,
+                    timestamp: new Date(message.timestamp),
+                    author: message.author
+                }));
             })
-            .then(() => this.setState({ messagesLoading: false }));
+            .then((messages) => this.setState({
+                messages,
+                messagesLoading: false
+            }));
     }
 
     handleSubmit = (message: IMessageData): void => {
@@ -91,17 +96,17 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
     }
 
     private get content(): JSX.Element {
-        const { owner, companion, companionLoading, messages, messagesLoading } = this.state;
+        const { owner, chat, chatLoading, messages, messagesLoading } = this.state;
 
-        if (companionLoading) {
+        if (chatLoading) {
             return <Loader/>;
-        } else if (!companion) {
+        } else if (!chat) {
             return <Error statusCode={404}/>;
         }
 
         return <Chat
             owner={owner}
-            chatName={companion.nickname}
+            chatName={chat.name}
             messages={messages}
             messagesLoading={messagesLoading}
             onSubmit={this.handleSubmit}/>;
@@ -109,14 +114,16 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
 
     render(): JSX.Element {
         return (
-            <div>
+            <Fragment>
                 <Head>
                     <title>Сообщения</title>
                     <link rel="stylesheet"
                         href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 </Head>
-                {this.content}
-            </div>
+                <div className="pageWrapper">
+                    {this.content}
+                </div>
+            </Fragment>
         );
     }
 }

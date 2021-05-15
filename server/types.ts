@@ -4,6 +4,12 @@ export interface IUserData {
     avatar: string
 }
 
+export interface IChatData {
+    id: string
+    name: string
+    members: IUserData[]
+}
+
 export interface IMessageData {
     id: string
     text: string

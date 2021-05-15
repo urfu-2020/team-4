@@ -32,19 +32,23 @@ export default class ContactsPage extends Component<IContactsPageProps, IContact
             .then((response) => this.setState({ loading: false, contacts: response.contacts }));
     }
 
-    render(): JSX.Element {
+    private get content(): JSX.Element {
         const { contacts, loading } = this.state;
 
+        return loading
+            ? <Loader/>
+            : <Contacts contacts={contacts}/>;
+    }
+
+    render(): JSX.Element {
         return (
             <Fragment>
                 <Head>
                     <title>Контакты</title>
                 </Head>
-                {
-                    loading
-                        ? <Loader/>
-                        : <Contacts contacts={contacts}/>
-                }
+                <div className="pageWrapper">
+                    {this.content}
+                </div>
             </Fragment>
         );
     }

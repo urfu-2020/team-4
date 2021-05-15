@@ -21,7 +21,7 @@ interface IChatProps {
 }
 
 export default class Chat extends Component<IChatProps, IInputData> {
-    state: { text: string } = {
+    state: IInputData = {
         text: ''
     };
 
@@ -42,7 +42,7 @@ export default class Chat extends Component<IChatProps, IInputData> {
         const isButtonDisabled = !text;
 
         return (
-            <div className={styles.chatContainer}>
+            <div className={styles.wrapper}>
                 <ChatHeader chatName={chatName}/>
                 <Chatbox owner={owner} loading={messagesLoading} messages={messages}/>
                 <ChatInput
