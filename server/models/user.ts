@@ -1,48 +1,16 @@
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
-import Sequelize, { STRING, DATE } from 'sequelize';
+import { Sequelize, STRING } from 'sequelize';
 import { db } from '../databaseConfig/database';
 
 const User = db.define('user', {
-    // Модель пользователя для взаимодействия с БД
+    // Модель пользователя для взаимодействия с БД, пока только два поля
     // id - SERIAL PRIMARY KEY
-    githubId: {
-        type: STRING,
-        comment: 'Ид пользователя на гитхабе'
-    },
-    firstName: {
-        type: STRING,
-        comment: 'Имя пользователя'
-    },
-    lastName: {
-        type: STRING,
-        comment: 'Фамилия пользователя'
-    },
-    middleName: {
-        type: STRING,
-        comment: 'Отчество пользователя'
-    },
-    email: {
-        type: STRING,
-        comment: 'Почтовый адрес пользователя'
-    },
-    phone: {
-        type: STRING,
-        comment: 'Телефонный номер пользователя'
-    },
-    avatar: {
-        type: STRING,
-        comment: 'Аватарка пользователя'
-    },
-    createdAt: {
-        type: DATE,
-        defaultValue: Sequelize.NOW
+    // githubid - VARCHAR(255) ник на гитхабе, при авторизации будет добавляться в бд
+    githubid: {
+        type: STRING
     }
 }, {
     timestamps: false
 });
-
-(async () => {
-    await User.sync({ alter: true });
-})();
 
 export const user = User;
