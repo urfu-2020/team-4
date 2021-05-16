@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { chat as chatQuery } from '../models/chat';
+import { Chat as chatQuery } from '../models/chat';
 
 export function create({ body: { name } }: {
     body: { name: string }

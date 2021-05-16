@@ -2,7 +2,7 @@
 import Sequelize, {STRING, INTEGER, DATE, ARRAY, NUMBER} from 'sequelize';
 import { db } from '../databaseConfig/database';
 
-const Chat = db.define('chat', {
+export const Chat = db.define('chat', {
     // Модель чата
     // id - SERIAL PRIMARY KEY
     // createdAt - DATETIME время создания сообщения
@@ -28,4 +28,3 @@ const Chat = db.define('chat', {
     await Chat.sync({ alter: true });
 })();
 
-export const chat = Chat;

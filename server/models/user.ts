@@ -2,41 +2,16 @@
 import Sequelize, { STRING, DATE } from 'sequelize';
 import { db } from '../databaseConfig/database';
 
-const User = db.define('user', {
+export const User = db.define('user', {
     // Модель пользователя для взаимодействия с БД
     // id - SERIAL PRIMARY KEY
     githubId: {
         type: STRING,
         comment: 'Ид пользователя на гитхабе'
     },
-    firstName: {
-        type: STRING,
-        comment: 'Имя пользователя'
-    },
-    lastName: {
-        type: STRING,
-        comment: 'Фамилия пользователя'
-    },
-    middleName: {
-        type: STRING,
-        comment: 'Отчество пользователя'
-    },
-    email: {
-        type: STRING,
-        allowNull: false,
-        comment: 'Почтовый адрес пользователя'
-    },
-    phone: {
-        type: STRING,
-        comment: 'Телефонный номер пользователя'
-    },
     avatar: {
         type: STRING,
         comment: 'Аватарка пользователя'
-    },
-    createdAt: {
-        type: DATE,
-        defaultValue: Sequelize.NOW
     }
 }, {
     timestamps: false
@@ -45,5 +20,3 @@ const User = db.define('user', {
 (async () => {
     await User.sync({ alter: true });
 })();
-
-export const user = User;
