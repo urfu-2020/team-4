@@ -5,7 +5,7 @@ import { db } from '../databaseConfig/database';
 export const User = db.define('user', {
     // Модель пользователя для взаимодействия с БД
     // id - SERIAL PRIMARY KEY
-    githubId: {
+    githubLogin: {
         type: STRING,
         comment: 'Ид пользователя на гитхабе'
     },

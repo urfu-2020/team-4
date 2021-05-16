@@ -5,7 +5,7 @@ export function list(_req: Request, res: Response): void {
     User.findAll().then(users => {
         const allUsers = [];
         for (const usr of users) {
-            const nickname = usr.getDataValue('githubId');
+            const nickname = usr.getDataValue('githubLogin');
             const avatar = usr.getDataValue('avatar');
             allUsers.push({ nickname, avatar });
         }
@@ -19,7 +19,7 @@ export function list(_req: Request, res: Response): void {
 
 export function item(req: Request, res: Response): void {
     const { id } = req.params;
-    User.findOne({ where: { githubid: id } }).then(usr => {
+    User.findOne({ where: { githubLogin: id } }).then(usr => {
         res.json(usr);
     })
         .catch(e => {
