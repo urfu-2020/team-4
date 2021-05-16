@@ -1,8 +1,10 @@
 import { Application } from 'express';
 
-import { item, list } from './controllers/contacts';
 import { PassportStatic } from 'passport';
 import { NextServer } from 'next/dist/server/next';
+import * as contacts from './controllers/users';
+import * as messages from './controllers/messages';
+import * as chats from './controllers/chats';
 
 export default (server: Application, passport: PassportStatic, nextApp: NextServer): void => {
     const isAuthForApi = (req, res, next) => {
@@ -14,10 +16,13 @@ export default (server: Application, passport: PassportStatic, nextApp: NextServ
         }
     };
 
-    server.get('/api/contacts/:id', isAuthForApi, item);
+    server.get('/api/contacts', isAuthForApi, contacts.list);
+    server.get('/api/contacts/:id', isAuthForApi, contacts.item);
 
-    server.get('/api/contacts', isAuthForApi, list);
+    server.post('/api/message/sendToUser/:userId', isAuthForApi, messages.sendToUser);
+    server.post('/api/chat/:chatId/message/list', isAuthForApi, messages.list);
 
+    server.post('/chat', chats.create);
     const isAuth = (req, res, next) => {
         if (req.user) {
             next();
