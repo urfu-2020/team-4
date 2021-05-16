@@ -9,10 +9,6 @@ const User = db.define('user', {
         type: STRING,
         comment: 'Ид пользователя на гитхабе'
     },
-    email: {
-        type: STRING,
-        comment: 'Почтовый адрес пользователя'
-    },
     avatar: {
         type: STRING,
         comment: 'Аватарка пользователя'
