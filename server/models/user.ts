@@ -5,17 +5,13 @@ import { db } from '../databaseConfig/database';
 const User = db.define('user', {
     // Модель пользователя для взаимодействия с БД
     // id - SERIAL PRIMARY KEY
-    githubId: {
+    githubLogin: {
         type: STRING,
         comment: 'Ид пользователя на гитхабе'
     },
     avatar: {
         type: STRING,
         comment: 'Аватарка пользователя'
-    },
-    createdAt: {
-        type: DATE,
-        defaultValue: Sequelize.NOW
     }
 }, {
     timestamps: false
