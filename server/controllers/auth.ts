@@ -53,8 +53,7 @@ export default (app: Application): void => {
                 email: profile._json.email
             }
         })
-            .then(([u, created]) => {
-                profile.userId = u.get('id');
+            .then(() => {
                 cb(null, profile);
             })
             .catch(err => {

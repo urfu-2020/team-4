@@ -30,7 +30,7 @@ export function sendToUser(req: Request , res: Response): void {
     chatQuery.findOrCreate({
         where: {
             users: {
-                [Op.contains]: [req.user.userId, req.params.userId]
+                [Op.contains]: [req.user.username, req.params.userId]
             },
             type: 'private'
         }
