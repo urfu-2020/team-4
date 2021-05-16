@@ -49,7 +49,8 @@ export default (app: Application): void => {
         user.findOrCreate({
             where: { githubid: profile._json.login }
         })
-            .then(() => {
+            .then(([u, created]) => {
+                profile.userId = u.id;
                 cb(null, profile);
             })
             .catch(err => {

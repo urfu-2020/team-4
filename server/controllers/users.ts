@@ -11,7 +11,10 @@ export function list(_req: Request, res: Response): void {
         }
         res.json({ contacts: allUsers });
     })
-        .catch(err => console.error(err));
+        .catch(e => {
+            console.error(e.toString());
+            res.status(400).json(e.toString())
+        });
 }
 
 export function item(req: Request, res: Response): void {
@@ -19,5 +22,8 @@ export function item(req: Request, res: Response): void {
     user.findOne({ where: { githubid: id } }).then(usr => {
         res.json(usr);
     })
-        .catch(err => console.error(err));
+        .catch(e => {
+            console.error(e.toString());
+            res.status(400).json(e.toString())
+        });
 }

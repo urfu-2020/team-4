@@ -8,5 +8,8 @@ export function create({ body: { name } }: {
         name: name
     })
         .then(r => res.status(200).json(r.toJSON()))
-        .catch(() => res.sendStatus(400));
+        .catch(e => {
+            console.error(e.toString());
+            res.status(400).json(e.toString())
+        });
 }
