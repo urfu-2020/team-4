@@ -1,21 +1,69 @@
 import { Application } from 'express';
 
-
-import { error404 } from './controllers/errors';
+import { item, list } from './controllers/contacts';
+import { PassportStatic } from 'passport';
+import { NextServer } from 'next/dist/server/next';
 import * as contacts from './controllers/users';
 import * as messages from './controllers/messages';
 import * as chats from './controllers/chats';
 
-export default (app: Application): void => {
-    app.get('/', contacts.list);
+export default (server: Application, passport: PassportStatic, nextApp: NextServer): void => {
+    const isAuthForApi = (req, res, next) => {
+        if (req.user) {
+            next();
+        } else {
+            const error = { code: 401, message: 'unauthorized user' };
+            res.status(401).json(error);
+        }
+    };
 
-    app.get('/contacts', contacts.list);
-    app.get('/contacts/:id', contacts.item);
+    app.get('/api/contacts', isAuthForApi, contacts.list);
+    app.get('/api/contacts/:id', isAuthForApi, contacts.item);
 
-    app.post('/chat/:id/message', messages.create);
-    app.post('/chat/:id/message/list', messages.list);
+    app.post('/api/chat/:id/message', isAuthForApi, messages.create);
+    app.post('/api/chat/:id/message/list', isAuthForApi, messages.list);
 
     app.post('/chat', chats.create);
+    const isAuth = (req, res, next) => {
+        if (req.user) {
+            next();
+        } else {
+            res.redirect('/login');
+        }
+    };
 
-    app.all('*', error404);
+    server.get('/', (req, res) => {
+        res.redirect('/contacts');
+    });
+
+    server.get('/contacts', isAuth, (req, res) => {
+        return nextApp.render(req, res, '/contacts');
+    });
+
+    server.get('/contacts/:id', isAuth, (req, res) => {
+        return nextApp.render(req, res, '/chat', { ...req.query, id: req.params.id });
+    });
+
+    server.get('/login', (req, res) => {
+        if (req.user) {
+            return res.redirect('/');
+        }
+        res.redirect('/auth/github');
+    });
+
+    server.get('/logout', (req, res) => {
+        req.logOut();
+        res.redirect('/login');
+    });
+
+    server.get('/auth/github',
+        passport.authenticate('github'));
+
+    server.get('/auth/github/callback',
+        passport.authenticate('github', { failureRedirect: '/login' }),
+        function (req, res) {
+            // Successful authentication, redirect home.
+            res.redirect('/');
+        }
+    );
 };
