@@ -3,8 +3,8 @@ import { Message } from '../models/message';
 import { Chat } from '../models/chat';
 import { Op } from "sequelize";
 
-export function list({ params: { id }, body: { page, count } }: {
-    params: { id: number },
+export function list({ params: { chatId }, body: { page, count } }: {
+    params: { chatId: number },
     body: { page: number, count: number }
 }, res: Response): void {
     Message.findAndCountAll({
@@ -14,7 +14,7 @@ export function list({ params: { id }, body: { page, count } }: {
         offset: (page - 1) * count,
         limit: count,
         where: {
-            chatId: id
+            chatId: chatId
         }
     }).then(rowsAndCount =>
         res.json({messages: rowsAndCount.rows.reverse(), count: rowsAndCount.count})
