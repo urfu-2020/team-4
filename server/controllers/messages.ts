@@ -1,7 +1,7 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import { Message } from '../models/message';
 import { Chat } from '../models/chat';
-import { Op } from "sequelize";
+import { Op } from 'sequelize';
 
 export function list({ params: { chatId }, body: { page, count } }: {
     params: { chatId: number },
@@ -17,16 +17,16 @@ export function list({ params: { chatId }, body: { page, count } }: {
             chatId: chatId
         }
     }).then(rowsAndCount =>
-        res.json({messages: rowsAndCount.rows.reverse(), count: rowsAndCount.count})
+        res.json({ messages: rowsAndCount.rows.reverse(), count: rowsAndCount.count })
     )
         // eslint-disable-next-line no-console
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json(e.toString())
+            res.status(400).json(e.toString());
         });
 }
 
-export function sendToUser(req: Request , res: Response): void {
+export function sendToUser(req: Request, res: Response): void {
     Chat.findOne({
         where: {
             users: {
@@ -40,21 +40,26 @@ export function sendToUser(req: Request , res: Response): void {
                 users: [req.user.username, req.params.userId],
                 type: 'private',
                 name: 'default'
+            // eslint-disable-next-line no-shadow
             }).then((chat) => {
-                if (req.body.message)
+                if (req.body.message) {
                     createMessage(chat, req.body.message, res);
-                else
+                } else {
                     res.status(400);
+                }
             });
         } else {
-            if (req.body.message)
+            // eslint-disable-next-line no-lonely-if
+            if (req.body.message) {
                 createMessage(chat, req.body.message, res);
-            else
+            } else {
                 res.status(400);
+            }
         }
+    // eslint-disable-next-line newline-per-chained-call
     }).catch(e => {
         console.error(e.toString());
-        res.status(400).json(e.toString())
+        res.status(400).json(e.toString());
     });
 }
 
@@ -67,6 +72,6 @@ function createMessage(chat, message: string, res: Response) {
         .then(r => res.status(200).json(r.toJSON()))
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json(e.toString())
+            res.status(400).json(e.toString());
         });
 }

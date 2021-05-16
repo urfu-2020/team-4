@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Chat as chatQuery } from '../models/chat';
 
 export function create({ body: { name } }: {
@@ -10,6 +10,21 @@ export function create({ body: { name } }: {
         .then(r => res.status(200).json(r.toJSON()))
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json(e.toString())
+            res.status(400).json(e.toString());
+        });
+}
+
+export function findOrCreate(req: Request, res: Response): void {
+    const splitedQueryUsers = req.params.users.split('&');
+    chatQuery.findOrCreate({ where: { users: splitedQueryUsers },
+        defaults: {
+            name: splitedQueryUsers[1],
+            type: 'default'
+        } })
+        .then(chat => {
+            res.redirect(`/api/chat/${chat[0].getDataValue('id')}/message/list`);
+        })
+        .catch(err => {
+            console.error(err);
         });
 }
