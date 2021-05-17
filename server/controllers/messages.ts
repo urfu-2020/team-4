@@ -22,7 +22,7 @@ export function list({ params: { chatId }, body: { page, count } }: {
         // eslint-disable-next-line no-console
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json(e.toString())
+            res.status(400).json({ code: 400, message: e.toString() })
         });
 }
 
@@ -36,37 +36,24 @@ export function sendToUser(req: Request , res: Response): void {
         }
     }).then((chat) => {
         if (!chat) {
-            Chat.create({
-                users: [req.user.username, req.params.userId],
-                type: 'private',
-                name: 'default'
-            }).then((chat) => {
-                if (req.body.message)
-                    createMessage(chat, req.body.message, res);
-                else
-                    res.status(400);
-            });
+            res.status(403).json({ code: 403, message: "Chat not found" });
         } else {
-            if (req.body.message)
-                createMessage(chat, req.body.message, res);
-            else
-                res.status(400);
+            if (req.body.message) {
+                Message.create({
+                    chatId: chat.get('id'),
+                    authorLogin: req.user.username,
+                    value: req.body.message
+                })
+                    .then(r => res.status(200).json(r.toJSON()))
+                    .catch(e => {
+                        console.error(e.toString());
+                        res.status(400).json({ code: 400, message: e.toString() })
+                    });
+            } else
+                res.status(400).json({ code: 400, message: "No message found" });
         }
     }).catch(e => {
         console.error(e.toString());
-        res.status(400).json(e.toString())
+        res.status(400).json({ code: 400, message: e.toString() })
     });
-}
-
-function createMessage(chat, message: string, res: Response) {
-    Message.create({
-        chatId: chat.get('id'),
-        authorId: 1,
-        value: message
-    })
-        .then(r => res.status(200).json(r.toJSON()))
-        .catch(e => {
-            console.error(e.toString());
-            res.status(400).json(e.toString())
-        });
 }

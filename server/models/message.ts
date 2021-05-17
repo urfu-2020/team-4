@@ -8,11 +8,11 @@ export const Message = db.define('message', {
     // Модель сообщения
     // id - SERIAL PRIMARY KEY
     // createdAt - DATETIME время создания сообщения
-    authorId: {
+    authorLogin: {
         type: INTEGER,
         references: {
             model: User,
-            key: 'id'
+            key: 'githubLogin'
         },
         allowNull: false,
         comment: 'Ид автора сообщения'

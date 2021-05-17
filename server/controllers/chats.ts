@@ -10,6 +10,6 @@ export function create({ body: { name } }: {
         .then(r => res.status(200).json(r.toJSON()))
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json(e.toString())
+            res.status(400).json({ code: 400, message: e.toString() })
         });
 }
