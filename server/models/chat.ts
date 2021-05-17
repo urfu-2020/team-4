@@ -19,7 +19,7 @@ export const Chat = db.define('chat', {
     },
     users: {
         // eslint-disable-next-line new-cap
-        type: ARRAY(STRING)
+        type: ARRAY(NUMBER)
     }
 }, {
     timestamps: false

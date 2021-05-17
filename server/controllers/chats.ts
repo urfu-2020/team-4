@@ -16,10 +16,9 @@ export function create({ body: { name } }: {
 }
 
 export function findOrCreate(req: Request, res: Response): void {
-    const splitedQueryUsers = req.params.users.split('&');
-    chatQuery.findOrCreate({ where: { users: splitedQueryUsers },
+    const queryUsers = req.body.users;
+    chatQuery.findOrCreate({ where: { users: queryUsers },
         defaults: {
-            name: splitedQueryUsers[1],
             type: ChatTypes.PRIVATE
         } })
         .then(chat => {
@@ -35,7 +34,7 @@ export function listByUser(req: Request, res: Response): void {
     chatQuery.findAll({
         where: {
             users: {
-                [Op.contains]: [req.user.username]
+                [Op.contains]: [req.user.id]
             }
         }
     }).then((chats) => {

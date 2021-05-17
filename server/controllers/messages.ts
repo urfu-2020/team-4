@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { Message } from '../models/message';
 import { Chat } from '../models/chat';
+import { Op } from 'sequelize';
 
-export function list({ params: { chatId }, body: { page, count } }: {
-    params: { chatId: number },
-    body: { page: number, count: number }
+export function list({ params: { chatId, page, count } }: {
+    params: { chatId: number, page: number, count: number }
 }, res: Response): void {
     Message.findAndCountAll({
         order: [
@@ -28,17 +28,20 @@ export function list({ params: { chatId }, body: { page, count } }: {
 export function sendMessage(req: Request, res: Response): void {
     Chat.findOne({
         where: {
-            id: req.params.chatId
+            id: req.params.chatId,
+            users: {
+                [Op.contains]: [req.user.id]
+            }
         }
     }).then((chat) => {
         if (!chat) {
-            res.status(403).json({ code: 403, message: 'Chat not found' });
+            res.status(403).json({ code: 403, message: 'Chat for current user not found' });
         } else {
             // eslint-disable-next-line no-lonely-if
             if (req.body.message) {
                 Message.create({
                     chatId: chat.get('id'),
-                    authorLogin: req.user.username,
+                    authorId: req.user.id,
                     value: req.body.message
                 })
                     .then(r => res.status(200).json(r.toJSON()))

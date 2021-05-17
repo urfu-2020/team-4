@@ -52,8 +52,8 @@ export default (app: Application): void => {
                 avatar: profile._json.avatar_url
             }
         })
-            .then(() => {
-                cb(null, profile);
+            .then(([user]) => {
+                cb(null, user.toJSON());
             })
             .catch(err => {
                 console.error(err);
