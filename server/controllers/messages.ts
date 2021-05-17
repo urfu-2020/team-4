@@ -3,15 +3,17 @@ import { Message } from '../models/message';
 import { Chat } from '../models/chat';
 import { Op } from 'sequelize';
 
-export function list({ params: { chatId, page, count } }: {
-    params: { chatId: number, page: number, count: number }
-}, res: Response): void {
+export function list(req: Request, res: Response): void {
+    // Пока что выводит просто все сообщения из выбранного чата
+    // const page = req.params.page;
+    // const count = req.params.count;
+    const chatId = req.params.chatId;
     Message.findAndCountAll({
         order: [
             ['createdAt', 'DESC']
         ],
-        offset: (page - 1) * count,
-        limit: count,
+        // offset: (page - 1) * count,
+        // limit: count,
         where: {
             chatId: chatId
         }
