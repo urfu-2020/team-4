@@ -49,8 +49,7 @@ export default (app: Application): void => {
         User.findOrCreate({
             where: { githubLogin: profile._json.login },
             defaults: {
-                avatar: profile._json.avatar_url,
-                email: profile._json.email
+                avatar: profile._json.avatar_url
             }
         })
             .then(() => {

@@ -20,9 +20,12 @@ export default (server: Application, passport: PassportStatic, nextApp: NextServ
     server.get('/api/contacts/:id', isAuthForApi, contacts.item);
 
     server.post('/api/message/sendToUser/:userId', isAuthForApi, messages.sendToUser);
-    server.post('/api/chat/:chatId/message/list', isAuthForApi, messages.list);
+    // Следующий запрос надо будет сделать post-ом, наверное
+    server.get('/api/chat/findOrCreate/:users', isAuthForApi, chats.findOrCreate);
+    server.get('/api/chat/:chatId/message/list', isAuthForApi, messages.list);
 
     server.post('/chat', chats.create);
+
     const isAuth = (req, res, next) => {
         if (req.user) {
             next();

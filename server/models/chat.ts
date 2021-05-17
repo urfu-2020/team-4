@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
-import Sequelize, {STRING, INTEGER, DATE, ARRAY, NUMBER} from 'sequelize';
+import Sequelize, { STRING, INTEGER, DATE, ARRAY, NUMBER } from 'sequelize';
 import { db } from '../databaseConfig/database';
 
 export const Chat = db.define('chat', {
@@ -18,6 +18,7 @@ export const Chat = db.define('chat', {
         defaultValue: Sequelize.NOW
     },
     users: {
+        // eslint-disable-next-line new-cap
         type: ARRAY(STRING)
     }
 }, {
