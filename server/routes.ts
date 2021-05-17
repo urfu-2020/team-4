@@ -24,6 +24,7 @@ export default (server: Application, passport: PassportStatic, nextApp: NextServ
 
     server.post('/chat', isAuthForApi, chats.create);
     server.post('/api/chat/findOrCreate', isAuthForApi, chats.findOrCreate);
+    server.get('/api/chat/listByUser', isAuthForApi, chats.listByUser);
 
     const isAuth = (req, res, next) => {
         if (req.user) {
