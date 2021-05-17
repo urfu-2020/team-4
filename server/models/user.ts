@@ -2,7 +2,7 @@
 import Sequelize, { STRING, DATE } from 'sequelize';
 import { db } from '../databaseConfig/database';
 
-export const User = db.define('user', {
+const User = db.define('user', {
     // Модель пользователя для взаимодействия с БД
     // id - SERIAL PRIMARY KEY
     githubLogin: {
