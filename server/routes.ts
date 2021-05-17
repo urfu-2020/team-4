@@ -1,30 +1,38 @@
 import { Application } from 'express';
 
-import { item, list } from './controllers/contacts';
 import { PassportStatic } from 'passport';
 import { NextServer } from 'next/dist/server/next';
+import * as contacts from './controllers/contacts';
+import * as messages from './controllers/messages';
+import * as chats from './controllers/chats';
+
+const isAuthForApi = (req, res, next) => {
+    if (req.user) {
+        next();
+    } else {
+        const error = { code: 401, message: 'unauthorized user' };
+        res.status(401).json(error);
+    }
+};
+
+const isAuth = (req, res, next) => {
+    if (req.user) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+};
 
 export default (server: Application, passport: PassportStatic, nextApp: NextServer): void => {
-    const isAuthForApi = (req, res, next) => {
-        if (req.user) {
-            next();
-        } else {
-            const error = { code: 401, message: 'unauthorized user' };
-            res.status(401).json(error);
-        }
-    };
+    server.get('/api/contacts', isAuthForApi, contacts.list);
+    server.get('/api/contacts/:id', isAuthForApi, contacts.item);
 
-    server.get('/api/contacts/:id', isAuthForApi, item);
+    server.get('/api/chat/:chatId/message/list', isAuthForApi, messages.list);
+    server.post('/api/chat/:chatId/message', isAuthForApi, messages.sendMessage);
 
-    server.get('/api/contacts', isAuthForApi, list);
-
-    const isAuth = (req, res, next) => {
-        if (req.user) {
-            next();
-        } else {
-            res.redirect('/login');
-        }
-    };
+    server.post('/chat', isAuthForApi, chats.create);
+    server.post('/api/chat/findOrCreate', isAuthForApi, chats.findOrCreate);
+    server.get('/api/chat/listByUser', isAuthForApi, chats.listByUser);
 
     server.get('/', (req, res) => {
         res.redirect('/contacts');

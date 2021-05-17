@@ -4,7 +4,7 @@ import { Application } from 'express';
 const exSession = require('express-session');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const passport = require('passport');
-import { user } from '../models/user';
+import { User } from '../models/user';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const githubPassport = require('passport-github');
 
@@ -46,14 +46,14 @@ export default (app: Application): void => {
         callbackURL: cbAddress
     },
     function (accessToken, refreshToken, profile, cb) {
-        user.findOrCreate({
+        User.findOrCreate({
             where: { githubLogin: profile._json.login },
             defaults: {
                 avatar: profile._json.avatar_url
             }
         })
-            .then(() => {
-                cb(null, profile);
+            .then(([user]) => {
+                cb(null, user.toJSON());
             })
             .catch(err => {
                 console.error(err);
