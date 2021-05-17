@@ -51,7 +51,7 @@ export function sendToUser(req: Request, res: Response): void {
                         res.status(400).json({ code: 400, message: e.toString() });
                     });
             } else {
-                res.status(400).json({code: 400, message: 'No message found'});
+                res.status(400).json({ code: 400, message: 'No message found' });
             }
         }
     // eslint-disable-next-line newline-per-chained-call

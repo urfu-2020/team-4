@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { user } from '../models/user';
+import { User } from '../models/user';
 
 export function list(_req: Request, res: Response): void {
-    user.findAll().then(users => {
+    User.findAll().then(users => {
         const allUsers = [];
         for (const usr of users) {
             const nickname = usr.getDataValue('githubLogin');
@@ -16,7 +16,7 @@ export function list(_req: Request, res: Response): void {
 
 export function item(req: Request, res: Response): void {
     const { id } = req.params;
-    user.findOne({ where: { githubLogin: id } }).then(usr => {
+    User.findOne({ where: { githubLogin: id } }).then(usr => {
         res.json(usr);
     })
         .catch(err => console.error(err));
