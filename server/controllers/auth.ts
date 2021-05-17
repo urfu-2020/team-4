@@ -4,7 +4,7 @@ import { Application } from 'express';
 const exSession = require('express-session');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const passport = require('passport');
-import { user } from '../models/user';
+import { User } from '../models/user';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const githubPassport = require('passport-github');
 
@@ -28,12 +28,12 @@ export default (app: Application): void => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.serializeUser(function (usr, cb) {
-        cb(null, usr.id);
+    passport.serializeUser(function (profile, cb) {
+        cb(null, profile);
     });
 
-    passport.deserializeUser(function (id, cb) {
-        cb(null, id);
+    passport.deserializeUser(function (profile, cb) {
+        cb(null, profile);
     });
 
     // Авторизация
@@ -46,11 +46,14 @@ export default (app: Application): void => {
         callbackURL: cbAddress
     },
     function (accessToken, refreshToken, profile, cb) {
-        user.findOrCreate({
-            where: { githubid: profile._json.login }
+        User.findOrCreate({
+            where: { githubLogin: profile._json.login },
+            defaults: {
+                avatar: profile._json.avatar_url
+            }
         })
-            .then(() => {
-                cb(null, profile);
+            .then(([user]) => {
+                cb(null, user.toJSON());
             })
             .catch(err => {
                 console.error(err);
