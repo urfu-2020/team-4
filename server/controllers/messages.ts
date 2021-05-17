@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Message } from '../models/message';
 import { Chat } from '../models/chat';
-import { Op } from 'sequelize';
 
 export function list({ params: { chatId }, body: { page, count } }: {
     params: { chatId: number },
@@ -26,13 +25,10 @@ export function list({ params: { chatId }, body: { page, count } }: {
         });
 }
 
-export function sendToUser(req: Request, res: Response): void {
+export function sendMessage(req: Request, res: Response): void {
     Chat.findOne({
         where: {
-            users: {
-                [Op.contains]: [req.user.username, req.params.userId]
-            },
-            type: 'private'
+            id: req.params.chatId
         }
     }).then((chat) => {
         if (!chat) {
