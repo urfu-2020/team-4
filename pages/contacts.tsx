@@ -6,19 +6,33 @@ import Head from 'next/head';
 import { IUserData } from '../server/types';
 import Contacts from '../components/contacts';
 import Loader from '../components/loader';
+import { NextPageContext } from 'next';
 
 interface IContactsPageProps {
-    contacts: IUserData[];
+    owner: IUserData
 }
 
 interface IContactsPageState {
-    contacts: IUserData[];
-    loading: boolean;
+    contacts: IUserData[]
+    contactsLoading: boolean
 }
 
 export default class ContactsPage extends Component<IContactsPageProps, IContactsPageState> {
+    static async getInitialProps({ req, query }: NextPageContext): Promise<IContactsPageProps> {
+        let owner;
+        if (req && Object.prototype.hasOwnProperty.call(req, 'user')) {
+            // @ts-ignore
+            owner = req.user;
+        } else if (query.ownerId) {
+            owner = await fetch(`/api/contacts/${query.ownerId}`)
+                .then((response) => response.json());
+        }
+
+        return { owner };
+    }
+
     state: IContactsPageState = {
-        loading: true,
+        contactsLoading: true,
         contacts: []
     };
 
@@ -29,15 +43,17 @@ export default class ContactsPage extends Component<IContactsPageProps, IContact
     fetchContacts = (): void => {
         fetch('/api/contacts')
             .then((response) => response.json())
-            .then((response) => this.setState({ loading: false, contacts: response.contacts }));
+            .then((response) => this.setState(
+                { contactsLoading: false, contacts: response.contacts }
+            ));
     }
 
     private get content(): JSX.Element {
-        const { contacts, loading } = this.state;
+        const { contacts, contactsLoading } = this.state;
 
-        return loading
+        return contactsLoading
             ? <Loader/>
-            : <Contacts contacts={contacts}/>;
+            : <Contacts contacts={contacts} owner={this.props.owner}/>;
     }
 
     render(): JSX.Element {
@@ -46,9 +62,7 @@ export default class ContactsPage extends Component<IContactsPageProps, IContact
                 <Head>
                     <title>Контакты</title>
                 </Head>
-                <div className="pageWrapper">
-                    {this.content}
-                </div>
+                {this.content}
             </Fragment>
         );
     }

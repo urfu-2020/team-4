@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
-import Sequelize, { INTEGER, TEXT, DATE, NUMBER } from 'sequelize';
+import Sequelize, { TEXT, DATE, BIGINT } from 'sequelize';
 import { db } from '../databaseConfig/database';
 import { User } from './user';
 import { Chat } from './chat';
@@ -9,7 +9,7 @@ export const Message = db.define('message', {
     // id - SERIAL PRIMARY KEY
     // createdAt - DATETIME время создания сообщения
     authorId: {
-        type: NUMBER,
+        type: BIGINT,
         references: {
             model: User,
             key: 'id'
@@ -18,7 +18,7 @@ export const Message = db.define('message', {
         comment: 'Ид автора сообщения'
     },
     chatId: {
-        type: INTEGER,
+        type: BIGINT,
         references: {
             model: Chat,
             key: 'id'

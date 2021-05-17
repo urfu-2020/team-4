@@ -6,6 +6,7 @@ import styles from './index.module.css';
 
 interface IContactsProps {
     contacts: IUserData[];
+    owner: IUserData
 }
 
 export default class Contacts extends Component<IContactsProps> {
@@ -13,10 +14,16 @@ export default class Contacts extends Component<IContactsProps> {
         const contacts = this.props.contacts;
 
         return !contacts.length
-            ? <p className={styles.info}>contacts not found!</p>
+            ? <p className={styles.info}>У вас ещё нет контактов :(</p>
             : (
                 <ul className={styles.userList}>
-                    {contacts.map((user) => <ContactCard user={user}/>)}
+                    {
+                        contacts.map((user) =>
+                            <ContactCard key={user.id}
+                                user={user}
+                                owner={this.props.owner}
+                            />)
+                    }
                 </ul>
             );
     }

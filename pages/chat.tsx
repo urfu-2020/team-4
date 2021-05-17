@@ -10,31 +10,41 @@ import Chat from '../components/chat';
 import Loader from '../components/loader';
 
 interface IChatPageProps {
-    chatId?: string;
-    ownerId: string;
+    owner?: IUserData
+    contactId?: string
 }
 
 interface IChatPageState {
-    owner?: IUserData;
     chat?: IChatData;
     chatLoading: boolean;
-    messages: IMessageData[];
-    messagesLoading: boolean;
+    messages: IMessageData[]
+    messagesLoading: boolean
 }
 
 export default class ChatPage extends Component<IChatPageProps, IChatPageState> {
-    static async getInitialProps({ query, req }: NextPageContext): Promise<IChatPageProps> {
-        let ownerId;
+    static async getInitialProps(
+        { query, req, asPath }: NextPageContext
+    ): Promise<IChatPageProps> {
+        let owner;
         if (req && Object.prototype.hasOwnProperty.call(req, 'user')) {
             // @ts-ignore
-            ownerId = req.user as string;
+            owner = req.user;
+        } else if (query.ownerId) {
+            owner = await fetch(`/api/contacts/${query.ownerId}`)
+                .then((response) => response.json());
+        }
+        if (!owner) {
+            return {};
         }
 
-        return { ownerId, chatId: query.id as string };
+        const contactId = query.contactId
+            ? query.contactId as string
+            : asPath.slice(asPath.lastIndexOf('/') + 1);
+
+        return { owner, contactId };
     }
 
     state: IChatPageState = {
-        owner: undefined,
         chat: undefined,
         chatLoading: true,
         messages: [],
@@ -42,27 +52,27 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
     };
 
     componentDidMount(): void {
-        this.fetchChat();
-        this.fetchMessages();
-        this.fetchOwner();
+        if (this.props.contactId) {
+            Promise.resolve()
+                .then(() => {
+                    return this.fetchChat();
+                })
+                .then(() => {
+                    return this.fetchMessages();
+                });
+        }
     }
 
-    fetchOwner = (): void => {
-        this.setState({ owner: { id: this.props.ownerId, nickname: '', avatar: '' } });
-        this.fetchContact(this.props.ownerId)
-            .then((response) => {
-                this.setState({ owner: response.user });
-            });
-    }
+    fetchChat = (): Promise<void> => {
+        if (!this.props.owner || !this.props.contactId) {
+            return;
+        }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fetchContact = (id: string): Promise<any> => {
-        return fetch(`/api/contacts/${id}`)
-            .then((response) => response.json());
-    }
-
-    fetchChat = (): void => {
-        fetch(`/api/chat/${this.props.chatId}`)
+        return fetch('/api/chat/findOrCreate', {
+            body: JSON.stringify({ users: [this.props.owner.id, this.props.contactId] }),
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST'
+        })
             .then((response) => response.json())
             .then((response) => this.setState({
                 chat: response.chat,
@@ -70,8 +80,8 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
             }));
     }
 
-    fetchMessages = (): void => {
-        fetch('/api/messages')
+    fetchMessages = (): Promise<void> => {
+        return fetch(`/api/chat/${this.state.chat.id}/message/list`)
             .then((response) => response.json())
             .then((response) => {
                 return response.messages.map((message) => ({
@@ -88,15 +98,33 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
     }
 
     handleSubmit = (message: IMessageData): void => {
-        fetch('/api/messages', {
+        const { chat } = this.state;
+        if (!chat) {
+            return;
+        }
+
+        // TODO отправка не работает
+        fetch(`/api/chat/${chat.id}/message`, {
             body: JSON.stringify({ message }),
             headers: { 'Content-Type': 'application/json' },
             method: 'POST'
-        }).then(this.fetchMessages);
+        })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .then(() => this.fetchMessages());
     }
 
     private get content(): JSX.Element {
-        const { owner, chat, chatLoading, messages, messagesLoading } = this.state;
+        const { owner } = this.props;
+        const { chat, chatLoading, messages, messagesLoading } = this.state;
+
+        if (!owner) {
+            return <Error statusCode={404}/>;
+        }
 
         if (chatLoading) {
             return <Loader/>;

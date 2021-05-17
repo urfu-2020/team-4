@@ -7,7 +7,8 @@ export interface IUserData {
 export interface IChatData {
     id: string
     name: string
-    members: IUserData[]
+    type: string
+    users: IUserData[]
 }
 
 export interface IMessageData {

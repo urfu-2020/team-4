@@ -43,7 +43,7 @@ export default class Chat extends Component<IChatProps, IInputData> {
 
         return (
             <div className={styles.wrapper}>
-                <ChatHeader chatName={chatName}/>
+                <ChatHeader chatName={chatName} owner={owner}/>
                 <Chatbox owner={owner} loading={messagesLoading} messages={messages}/>
                 <ChatInput
                     handleSubmit={this.handleSubmit}

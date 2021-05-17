@@ -3,21 +3,19 @@ import { Message } from '../models/message';
 import { Chat } from '../models/chat';
 import { Op } from 'sequelize';
 
-export function list({ params: { chatId, page, count } }: {
-    params: { chatId: number, page: number, count: number }
+export function list({ params: { chatId } }: {
+    params: { chatId: number}
 }, res: Response): void {
-    Message.findAndCountAll({
+    Message.findAll({
         order: [
             ['createdAt', 'DESC']
         ],
-        offset: (page - 1) * count,
-        limit: count,
         where: {
             chatId: chatId
         }
-    }).then(rowsAndCount =>
-        res.json({ messages: rowsAndCount.rows.reverse(), count: rowsAndCount.count })
-    )
+    }).then(messages => {
+        res.json({ messages });
+    })
         // eslint-disable-next-line no-console
         .catch(e => {
             console.error(e.toString());

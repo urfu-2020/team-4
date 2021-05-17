@@ -22,7 +22,12 @@ export function findOrCreate(req: Request, res: Response): void {
             type: ChatTypes.PRIVATE
         } })
         .then(chat => {
-            res.redirect(`/api/chat/${chat[0].getDataValue('id')}/message/list`);
+            res.json({ chat: {
+                id: chat[0].getDataValue('id'),
+                name: chat[0].getDataValue('name'),
+                type: chat[0].getDataValue('type'),
+                users: chat[0].getDataValue('users')
+            } });
         })
         .catch(err => {
             console.error(err);
