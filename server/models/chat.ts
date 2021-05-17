@@ -25,6 +25,8 @@ export const Chat = db.define('chat', {
     timestamps: false
 });
 
+export const ChatTypes = { PRIVATE: 'private' };
+
 (async () => {
     await Chat.sync({ alter: true });
 })();

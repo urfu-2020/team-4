@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { Chat as chatQuery } from '../models/chat';
+import { Chat as chatQuery, ChatTypes } from '../models/chat';
+import { Op } from 'sequelize';
 
 export function create({ body: { name } }: {
     body: { name: string }
@@ -19,12 +20,29 @@ export function findOrCreate(req: Request, res: Response): void {
     chatQuery.findOrCreate({ where: { users: splitedQueryUsers },
         defaults: {
             name: splitedQueryUsers[1],
-            type: 'default'
+            type: ChatTypes.PRIVATE
         } })
         .then(chat => {
             res.redirect(`/api/chat/${chat[0].getDataValue('id')}/message/list`);
         })
         .catch(err => {
             console.error(err);
+            res.status(400).json({ code: 400, message: err.toString() });
+        });
+}
+
+export function listByUser(req: Request, res: Response): void {
+    chatQuery.findAll({
+        where: {
+            users: {
+                [Op.contains]: [req.user.username]
+            }
+        }
+    }).then((chats) => {
+        res.status(200).json(chats);
+    })
+        .catch((err) => {
+            console.error(err);
+            res.status(400).json({ code: 400, message: err.toString() });
         });
 }
