@@ -6,6 +6,23 @@ import * as contacts from './controllers/users';
 import * as messages from './controllers/messages';
 import * as chats from './controllers/chats';
 
+const isAuthForApi = (req, res, next) => {
+    if (req.user) {
+        next();
+    } else {
+        const error = { code: 401, message: 'unauthorized user' };
+        res.status(401).json(error);
+    }
+};
+
+const isAuth = (req, res, next) => {
+    if (req.user) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+};
+
 export default (server: Application, passport: PassportStatic, nextApp: NextServer): void => {
     server.get('/api/contacts', isAuthForApi, contacts.list);
     server.get('/api/contacts/:id', isAuthForApi, contacts.item);
@@ -51,21 +68,4 @@ export default (server: Application, passport: PassportStatic, nextApp: NextServ
             res.redirect('/');
         }
     );
-};
-
-const isAuthForApi = (req, res, next) => {
-    if (req.user) {
-        next();
-    } else {
-        const error = { code: 401, message: 'unauthorized user' };
-        res.status(401).json(error);
-    }
-};
-
-const isAuth = (req, res, next) => {
-    if (req.user) {
-        next();
-    } else {
-        res.redirect('/login');
-    }
 };
