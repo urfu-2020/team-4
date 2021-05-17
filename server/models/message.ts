@@ -9,13 +9,13 @@ export const Message = db.define('message', {
     // id - SERIAL PRIMARY KEY
     // createdAt - DATETIME время создания сообщения
     authorLogin: {
-        type: INTEGER,
+        type: STRING,
         references: {
             model: User,
             key: 'githubLogin'
         },
         allowNull: false,
-        comment: 'Ид автора сообщения'
+        comment: 'Логин автора сообщения'
     },
     chatId: {
         type: INTEGER,
