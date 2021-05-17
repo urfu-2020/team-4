@@ -13,7 +13,7 @@ export function list(_req: Request, res: Response): void {
     })
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json({ code: 400, message: e.toString() })
+            res.status(400).json({ code: 400, message: e.toString() });
         });
 }
 
@@ -24,6 +24,6 @@ export function item(req: Request, res: Response): void {
     })
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json({ code: 400, message: e.toString() })
+            res.status(400).json({ code: 400, message: e.toString() });
         });
 }
