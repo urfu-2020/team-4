@@ -3,18 +3,37 @@ import { Message } from '../models/message';
 import { Chat } from '../models/chat';
 import { Op } from 'sequelize';
 
-export function list({ params: { chatId } }: {
-    params: { chatId: number}
+export function list({ params: { chatId }, query: { page, limit } }: {
+    params: { chatId: number },
+    query: { page: number, limit: number }
 }, res: Response): void {
-    Message.findAll({
-        order: [
-            ['createdAt', 'ASC']
-        ],
-        where: {
-            chatId: chatId
-        }
-    }).then(messages => {
-        res.json({ messages });
+    let options;
+    if (page && limit) {
+        options = {
+            order: [
+                ['createdAt', 'ASC']
+            ],
+            where: {
+                chatId: chatId
+            },
+            limit: limit,
+            offset: (page - 1) * limit
+        };
+    } else {
+        options = {
+            order: [
+                ['createdAt', 'ASC']
+            ],
+            where: {
+                chatId: chatId
+            }
+        };
+    }
+
+    Message.findAndCountAll(
+        options
+    ).then(({ rows, count }) => {
+        res.json({ messages: rows, count: count });
     })
         // eslint-disable-next-line no-console
         .catch(e => {
