@@ -7,16 +7,20 @@ export function list(_req: Request, res: Response): void {
         for (const usr of users) {
             const nickname = usr.getDataValue('githubLogin');
             const avatar = usr.getDataValue('avatar');
-            allUsers.push({ nickname, avatar });
+            const id = usr.get('id');
+            allUsers.push({ nickname, avatar, id });
         }
         res.json({ contacts: allUsers });
     })
-        .catch(err => console.error(err));
+        .catch(e => {
+            console.error(e.toString());
+            res.status(400).json({ code: 400, message: e.toString() });
+        });
 }
 
 export function item(req: Request, res: Response): void {
     const { id } = req.params;
-    User.findOne({ where: { githubLogin: id } }).then(usr => {
+    User.findOne({ where: { id: id } }).then(usr => {
         res.json(usr);
     })
         .catch(err => console.error(err));

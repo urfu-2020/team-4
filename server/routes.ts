@@ -2,7 +2,7 @@ import { Application } from 'express';
 
 import { PassportStatic } from 'passport';
 import { NextServer } from 'next/dist/server/next';
-import * as contacts from './controllers/users';
+import * as contacts from './controllers/contacts';
 import * as messages from './controllers/messages';
 import * as chats from './controllers/chats';
 
