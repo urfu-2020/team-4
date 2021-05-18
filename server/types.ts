@@ -13,7 +13,7 @@ export interface IChatData {
 
 export interface IMessageData {
     id: string
-    text: string
-    timestamp: Date
+    value: string
+    createdAt: Date
     author: IUserData
 }

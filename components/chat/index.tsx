@@ -1,50 +1,57 @@
 /* eslint-disable no-invalid-this */
 
-import { ChangeEvent, Component } from 'react';
+// eslint-disable-next-line no-use-before-define
+import React, { ChangeEvent, Component, FormEvent } from 'react';
 
-import { IMessageData, IUserData } from '../../server/types';
+import { IChatData, IMessageData, IUserData } from '../../server/types';
 import ChatHeader from './header';
 import Chatbox from './chatbox';
 import ChatInput from './form';
 import styles from './index.module.css';
 
 interface IInputData {
-    text: string
+    value: string
 }
 
 interface IChatProps {
     onSubmit(message: IInputData): void
     owner: IUserData
-    chatName: string
+    chat: IChatData
     messages: IMessageData[]
     messagesLoading: boolean
 }
 
 export default class Chat extends Component<IChatProps, IInputData> {
     state: IInputData = {
-        text: ''
+        value: ''
     };
 
     handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
-        this.setState({ text: event.target.value });
+        this.setState({ value: event.target.value });
     }
 
-    handleSubmit = (): void => {
+    handleSubmit = (e: FormEvent): void => {
+        e.preventDefault();
         this.props.onSubmit(this.state);
 
-        this.setState({ text: '' });
+        this.setState({ value: '' });
     }
 
     render(): JSX.Element {
-        const { text } = this.state;
-        const { owner, chatName, messages, messagesLoading } = this.props;
+        const { value } = this.state;
+        const { owner, chat, messages, messagesLoading } = this.props;
 
-        const isButtonDisabled = !text;
+        const isButtonDisabled = !value;
 
         return (
             <div className={styles.wrapper}>
-                <ChatHeader chatName={chatName} owner={owner}/>
-                <Chatbox owner={owner} loading={messagesLoading} messages={messages}/>
+                <ChatHeader chat={chat} owner={owner}/>
+                <Chatbox
+                    owner={owner}
+                    loading={messagesLoading}
+                    messages={messages}
+                    chat={chat}
+                />
                 <ChatInput
                     handleSubmit={this.handleSubmit}
                     handleTextChange={this.handleTextChange}

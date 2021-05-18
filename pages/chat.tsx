@@ -63,6 +63,11 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
         }
     }
 
+    fetchUser = (userId: string) : Promise<IUserData> => {
+        return fetch(`/api/contacts/${userId}`)
+            .then((response) => response.json());
+    }
+
     fetchChat = (): Promise<void> => {
         if (!this.props.owner || !this.props.contactId) {
             return;
@@ -74,10 +79,26 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
             method: 'POST'
         })
             .then((response) => response.json())
-            .then((response) => this.setState({
-                chat: response.chat,
-                chatLoading: false
-            }));
+            .then((response) => {
+                this.setState({
+                    chat: response.chat
+                });
+
+                return response.chat.users;
+            })
+            .then((ids) => {
+                return Promise.all(ids.map((userId) => this.fetchUser(userId)));
+            })
+            .then((users) => {
+                const chat = this.state.chat;
+                // @ts-ignore
+                chat.users = users.map((user: {id, githubLogin, avatar }) => ({
+                    id: user.id.toString(),
+                    nickname: user.githubLogin,
+                    avatar: user.avatar
+                }));
+                this.setState({ chat, chatLoading: false });
+            });
     }
 
     fetchMessages = (): Promise<void> => {
@@ -86,9 +107,9 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
             .then((response) => {
                 return response.messages.map((message) => ({
                     id: message.id,
-                    text: message.text,
-                    timestamp: new Date(message.timestamp),
-                    author: message.author
+                    value: message.value,
+                    createdAt: new Date(message.createdAt),
+                    author: { id: message.authorId, nickname: 'Nickname', avatar: null }
                 }));
             })
             .then((messages) => this.setState({
@@ -97,24 +118,17 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
             }));
     }
 
-    handleSubmit = (message: IMessageData): void => {
+    handleSubmit = (message: { value }): void => {
         const { chat } = this.state;
         if (!chat) {
             return;
         }
 
-        // TODO отправка не работает
         fetch(`/api/chat/${chat.id}/message`, {
-            body: JSON.stringify({ message }),
+            body: JSON.stringify({ message: message.value }),
             headers: { 'Content-Type': 'application/json' },
             method: 'POST'
         })
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
             .then(() => this.fetchMessages());
     }
 
@@ -134,7 +148,7 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
 
         return <Chat
             owner={owner}
-            chatName={chat.name}
+            chat={chat}
             messages={messages}
             messagesLoading={messagesLoading}
             onSubmit={this.handleSubmit}/>;

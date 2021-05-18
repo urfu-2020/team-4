@@ -141,6 +141,8 @@
 .avatar {
   display: inline-block;
 
+  overflow: hidden;
+
   width: 40px;
   height: 40px;
   margin: 0 10px 10px 0;

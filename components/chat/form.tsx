@@ -1,9 +1,10 @@
-import { ChangeEvent } from 'react';
+// eslint-disable-next-line no-use-before-define
+import React, { ChangeEvent, FormEvent } from 'react';
 import styles from './index.module.css';
 
 interface IMessageFormProps {
     handleTextChange(event: ChangeEvent<HTMLTextAreaElement>): void
-    handleSubmit() : void
+    handleSubmit(e: FormEvent) : void
     isButtonDisabled: boolean
 }
 

@@ -5,26 +5,32 @@ import styles from './index.module.css';
 interface IMessageProps {
     owner: IUserData
     message: IMessageData
+    users: IUserData[]
 }
 
-export default function Message({ owner, message }: IMessageProps): JSX.Element {
+export default function Message({ owner, message, users }: IMessageProps): JSX.Element {
+
+    const author = users.find((user) => {
+        return user.id.toString() === message.author.id.toString();
+    });
+
     const cls = [styles.messageContainer];
-    if (message.author.id === owner.id) {
+    if (author.id.toString() === owner.id.toString()) {
         cls.push(styles.messageSelf);
     }
-    const timestamp = message.timestamp.toLocaleTimeString().slice(0, -3) + ' ' +
-        message.timestamp.toLocaleDateString();
+    const timestamp = message.createdAt.toLocaleTimeString().slice(0, -3) + ' ' +
+        message.createdAt.toLocaleDateString();
 
     return (
         <article className={classNames(...cls)}>
             <div className={styles.messageBox}>
-                <img className={styles.avatar} src={message.author.avatar} alt="avatar"/>
+                <img className={styles.avatar} src={author.avatar} alt="avatar"/>
                 <div className={styles.messageContent}>
                     <div className={styles.messageText}>
-                        <p className={styles.messageText}>{message.text}</p>
+                        <p className={styles.messageText}>{message.value}</p>
                     </div>
                     <span className={styles.timestamp}>
-                        <span className={styles.username}>{message.author.nickname}</span>&bull;
+                        <span className={styles.username}>{author.nickname}</span>&bull;
                         <span className={styles.postTime}>{timestamp}</span>
                     </span>
                 </div>
