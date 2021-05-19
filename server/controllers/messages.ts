@@ -3,23 +3,35 @@ import { Message } from '../models/message';
 import { Chat } from '../models/chat';
 import { Op } from 'sequelize';
 
-export function list(req: Request, res: Response): void {
-    // Пока что выводит просто все сообщения из выбранного чата
-    // const page = req.params.page;
-    // const count = req.params.count;
-    const chatId = req.params.chatId;
-    Message.findAndCountAll({
-        order: [
-            ['createdAt', 'DESC']
-        ],
-        // offset: (page - 1) * count,
-        // limit: count,
-        where: {
-            chatId: chatId
+export function list({ params: { chatId  }, query: { page, count } }: {
+    params: { chatId: number }, query: { page: number, count: number }
+}, res: Response): void {
+    let options: {}
+    if (page && count) {
+        options = {
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            offset: (page - 1) * count,
+            limit: count,
+            where: {
+                chatId: chatId
+            }
         }
-    }).then(rowsAndCount =>
-        res.json({ messages: rowsAndCount.rows.reverse(), count: rowsAndCount.count })
-    )
+    } else {
+        options = {
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            where: {
+                chatId: chatId
+            }
+        }
+    }
+    Message.findAndCountAll(options)
+        .then(rowsAndCount =>
+            res.json({ messages: rowsAndCount.rows.reverse(), count: rowsAndCount.count })
+        )
         // eslint-disable-next-line no-console
         .catch(e => {
             console.error(e.toString());
