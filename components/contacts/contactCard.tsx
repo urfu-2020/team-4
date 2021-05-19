@@ -9,13 +9,12 @@ interface IContactProps {
     owner: IUserData
 }
 
-
 export default class ContactCard extends Component<IContactProps> {
     render(): JSX.Element {
-        const user = this.props.user;
+        const { user, owner } = this.props;
         const linkHref = {
             pathname: '/chat',
-            query: { 'contactId': user.id, 'ownerId': this.props.owner.id }
+            query: { 'contactId': user.id, 'ownerId': owner.id }
         };
 
         return (

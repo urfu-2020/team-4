@@ -30,8 +30,8 @@ export default class Chat extends Component<IChatProps, IInputData> {
         this.setState({ value: event.target.value });
     }
 
-    handleSubmit = (e: FormEvent): void => {
-        e.preventDefault();
+    handleSubmit = (event: FormEvent): void => {
+        event.preventDefault();
         this.props.onSubmit(this.state);
 
         this.setState({ value: '' });
@@ -41,8 +41,6 @@ export default class Chat extends Component<IChatProps, IInputData> {
         const { value } = this.state;
         const { owner, chat, messages, messagesLoading } = this.props;
 
-        const isButtonDisabled = !value;
-
         return (
             <div className={styles.wrapper}>
                 <ChatHeader chat={chat} owner={owner}/>
@@ -50,12 +48,11 @@ export default class Chat extends Component<IChatProps, IInputData> {
                     owner={owner}
                     loading={messagesLoading}
                     messages={messages}
-                    chat={chat}
                 />
                 <ChatInput
                     handleSubmit={this.handleSubmit}
                     handleTextChange={this.handleTextChange}
-                    isButtonDisabled={isButtonDisabled}
+                    content={value}
                 />
             </div>
         );

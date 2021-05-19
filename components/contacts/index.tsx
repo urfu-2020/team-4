@@ -19,10 +19,7 @@ export default class Contacts extends Component<IContactsProps> {
                 <ul className={styles.userList}>
                     {
                         contacts.map((user) =>
-                            <ContactCard key={user.id}
-                                user={user}
-                                owner={this.props.owner}
-                            />)
+                            <ContactCard key={user.id} user={user} owner={this.props.owner}/>)
                     }
                 </ul>
             );

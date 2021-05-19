@@ -1,4 +1,4 @@
-import { IChatData, IMessageData, IUserData } from '../../server/types';
+import { IMessageData, IUserData } from '../../server/types';
 import styles from './index.module.css';
 import Message from './message';
 import Loader from '../loader';
@@ -8,10 +8,9 @@ interface IMessagesProps {
     owner: IUserData
     loading: boolean
     messages: IMessageData[]
-    chat: IChatData
 }
 
-export default function Chatbox({ owner, loading, messages, chat }: IMessagesProps) : JSX.Element {
+export default function Chatbox({ owner, loading, messages }: IMessagesProps) : JSX.Element {
     if (loading) {
         return <Loader/>;
     }
@@ -29,10 +28,7 @@ export default function Chatbox({ owner, loading, messages, chat }: IMessagesPro
             <section className={styles.chatWindow}>
                 {
                     messages.map((message) => {
-                        return <Message key={message.id}
-                            owner={owner}
-                            message={message}
-                            users={chat.users}/>;
+                        return <Message key={message.id} owner={owner} message={message}/>;
                     })
                 }
                 {refElement}

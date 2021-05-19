@@ -5,19 +5,21 @@ import styles from './index.module.css';
 interface IMessageFormProps {
     handleTextChange(event: ChangeEvent<HTMLTextAreaElement>): void
     handleSubmit(e: FormEvent) : void
-    isButtonDisabled: boolean
+    content: string
 }
 
 export default function ChatInput(
-    { handleTextChange, handleSubmit, isButtonDisabled }: IMessageFormProps
+    { handleTextChange, handleSubmit, content }: IMessageFormProps
 ) : JSX.Element {
+
+    const isButtonDisabled = !content;
 
     return (
         <form className={styles.chatForm} onSubmit={handleSubmit}>
             <textarea className={styles.messageInput} autoComplete="on"
                 placeholder="Type a message"
                 onChange={handleTextChange}
-            />
+                value={content}/>
             <button className={styles.submitButton} type="submit" disabled={isButtonDisabled}>
                 <i className="material-icons">send</i>
             </button>

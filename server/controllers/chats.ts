@@ -11,7 +11,7 @@ export function create({ body: { name } }: {
         .then(r => res.status(200).json(r.toJSON()))
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json({ code: 400, message: e.toString() });
+            res.status(400).json({ error: { code: 400, message: e.toString() } });
         });
 }
 
@@ -31,7 +31,7 @@ export function findOrCreate(req: Request, res: Response): void {
         })
         .catch(err => {
             console.error(err);
-            res.status(400).json({ code: 400, message: err.toString() });
+            res.status(400).json({ error: { code: 400, message: err.toString() } });
         });
 }
 
@@ -47,6 +47,6 @@ export function listByUser(req: Request, res: Response): void {
     })
         .catch((err) => {
             console.error(err);
-            res.status(400).json({ code: 400, message: err.toString() });
+            res.status(400).json({ error: { code: 400, message: err.toString() } });
         });
 }

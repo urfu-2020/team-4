@@ -5,21 +5,18 @@ import styles from './index.module.css';
 interface IMessageProps {
     owner: IUserData
     message: IMessageData
-    users: IUserData[]
 }
 
-export default function Message({ owner, message, users }: IMessageProps): JSX.Element {
-
-    const author = users.find((user) => {
-        return user.id.toString() === message.author.id.toString();
-    });
+export default function Message({ owner, message }: IMessageProps): JSX.Element {
+    const { value, createdAt, author } = message;
 
     const cls = [styles.messageContainer];
-    if (author.id.toString() === owner.id.toString()) {
+    if (author.id === owner.id) {
         cls.push(styles.messageSelf);
     }
-    const timestamp = message.createdAt.toLocaleTimeString().slice(0, -3) + ' ' +
-        message.createdAt.toLocaleDateString();
+
+    const timestamp = createdAt.toLocaleTimeString().slice(0, -3) + ' ' +
+        createdAt.toLocaleDateString();
 
     return (
         <article className={classNames(...cls)}>
@@ -27,7 +24,7 @@ export default function Message({ owner, message, users }: IMessageProps): JSX.E
                 <img className={styles.avatar} src={author.avatar} alt="avatar"/>
                 <div className={styles.messageContent}>
                     <div className={styles.messageText}>
-                        <p className={styles.messageText}>{message.value}</p>
+                        <p className={styles.messageText}>{value}</p>
                     </div>
                     <span className={styles.timestamp}>
                         <span className={styles.username}>{author.nickname}</span>&bull;

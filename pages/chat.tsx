@@ -8,6 +8,7 @@ import { Component, Fragment } from 'react';
 import { IChatData, IMessageData, IUserData } from '../server/types';
 import Chat from '../components/chat';
 import Loader from '../components/loader';
+import { checkError, fetchUser, getUser } from '../helpers/helpers';
 
 interface IChatPageProps {
     owner?: IUserData
@@ -25,14 +26,7 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
     static async getInitialProps(
         { query, req, asPath }: NextPageContext
     ): Promise<IChatPageProps> {
-        let owner;
-        if (req && Object.prototype.hasOwnProperty.call(req, 'user')) {
-            // @ts-ignore
-            owner = req.user;
-        } else if (query.ownerId) {
-            owner = await fetch(`/api/contacts/${query.ownerId}`)
-                .then((response) => response.json());
-        }
+        const owner = await getUser(req, query);
         if (!owner) {
             return {};
         }
@@ -46,32 +40,36 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
 
     state: IChatPageState = {
         chat: undefined,
-        chatLoading: true,
+        chatLoading: false,
         messages: [],
-        messagesLoading: true
+        messagesLoading: false
     };
 
     componentDidMount(): void {
-        if (this.props.contactId) {
-            Promise.resolve()
-                .then(() => {
-                    return this.fetchChat();
-                })
-                .then(() => {
-                    return this.fetchMessages();
-                });
-        }
-    }
+        // @ts-ignore
+        window.props = this.props;
 
-    fetchUser = (userId: string) : Promise<IUserData> => {
-        return fetch(`/api/contacts/${userId}`)
-            .then((response) => response.json());
+        Promise.resolve()
+            .then(() => {
+                return this.fetchChat();
+            })
+            .then(() => {
+                return this.fetchMessages();
+            })
+            .catch((err) => {
+                this.setState({ chatLoading: false, messagesLoading: false });
+                console.error('Error: ', err);
+            });
     }
 
     fetchChat = (): Promise<void> => {
         if (!this.props.owner || !this.props.contactId) {
-            return;
+            throw new Error({ statusCode: 400, title: 'contact not found' });
         }
+
+        this.setState({ chatLoading: true });
+
+        let chat;
 
         return fetch('/api/chat/findOrCreate', {
             body: JSON.stringify({ users: [this.props.owner.id, this.props.contactId] }),
@@ -80,36 +78,43 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
         })
             .then((response) => response.json())
             .then((response) => {
-                this.setState({
-                    chat: response.chat
-                });
+                checkError(response);
+                chat = response.chat;
 
                 return response.chat.users;
             })
             .then((ids) => {
-                return Promise.all(ids.map((userId) => this.fetchUser(userId)));
+                return Promise.all(ids.map((userId) => fetchUser(userId)));
             })
             .then((users) => {
-                const chat = this.state.chat;
-                // @ts-ignore
-                chat.users = users.map((user: {id, githubLogin, avatar }) => ({
-                    id: user.id.toString(),
-                    nickname: user.githubLogin,
-                    avatar: user.avatar
-                }));
+                users.forEach((user) => {
+                    checkError(user);
+                });
+                chat.users = users;
                 this.setState({ chat, chatLoading: false });
             });
     }
 
     fetchMessages = (): Promise<void> => {
-        return fetch(`/api/chat/${this.state.chat.id}/message/list`)
+        if (!this.state.chat) {
+            throw new Error({ statusCode: 400, title: 'chat not found' });
+        }
+        this.setState({ messagesLoading: true });
+
+        const chat = this.state.chat;
+
+        return fetch(`/api/chat/${chat.id}/message/list`)
             .then((response) => response.json())
             .then((response) => {
+                checkError(response);
+
                 return response.messages.map((message) => ({
                     id: message.id,
                     value: message.value,
                     createdAt: new Date(message.createdAt),
-                    author: { id: message.authorId, nickname: 'Nickname', avatar: null }
+                    author: chat.users.find((user) => {
+                        return user.id === message.authorId;
+                    })
                 }));
             })
             .then((messages) => this.setState({
@@ -162,9 +167,7 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
                     <link rel="stylesheet"
                         href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 </Head>
-                <div className="pageWrapper">
-                    {this.content}
-                </div>
+                {this.content}
             </Fragment>
         );
     }
