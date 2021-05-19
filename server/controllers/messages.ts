@@ -3,10 +3,10 @@ import { Message } from '../models/message';
 import { Chat } from '../models/chat';
 import { Op } from 'sequelize';
 
-export function list({ params: { chatId  }, query: { page, count } }: {
+export function list({ params: { chatId }, query: { page, count } }: {
     params: { chatId: number }, query: { page: number, count: number }
 }, res: Response): void {
-    let options: {}
+    let options = null;
     if (page && count) {
         options = {
             order: [
@@ -17,7 +17,7 @@ export function list({ params: { chatId  }, query: { page, count } }: {
             where: {
                 chatId: chatId
             }
-        }
+        };
     } else {
         options = {
             order: [
@@ -26,7 +26,7 @@ export function list({ params: { chatId  }, query: { page, count } }: {
             where: {
                 chatId: chatId
             }
-        }
+        };
     }
     Message.findAndCountAll(options)
         .then(rowsAndCount =>
