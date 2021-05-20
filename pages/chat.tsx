@@ -91,6 +91,9 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
                     checkError(user);
                 });
                 chat.users = users;
+                chat.name = chat.name ??
+                    chat.users.find((user) => user.id === this.props.contactId).nickname;
+
                 this.setState({ chat, chatLoading: false });
             });
     }
