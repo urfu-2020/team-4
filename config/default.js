@@ -3,8 +3,5 @@ module.exports = {
     debug: true,
 
     // Фиксируем порт для локальной разработки
-    port: 3000,
-
-    // Статичное содержимое раздаём из приложение через express.static
-    staticBasePath: '/public'
+    port: 3000
 };
