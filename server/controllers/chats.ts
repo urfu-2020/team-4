@@ -17,7 +17,7 @@ export function create({ body: { name } }: {
 
 export function findOrCreate(req: Request, res: Response): void {
     const queryUsers = req.body.users;
-    chatQuery.findOrCreate({ where: { users: queryUsers },
+    chatQuery.findOrCreate({ where: { users: queryUsers.sort((a, b) => a - b) },
         defaults: {
             type: ChatTypes.PRIVATE
         } })
