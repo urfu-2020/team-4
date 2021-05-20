@@ -40,9 +40,9 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
 
     state: IChatPageState = {
         chat: undefined,
-        chatLoading: false,
+        chatLoading: true,
         messages: [],
-        messagesLoading: false
+        messagesLoading: true
     };
 
     componentDidMount(): void {

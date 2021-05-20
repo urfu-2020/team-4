@@ -26,7 +26,7 @@ export default class ContactsPage extends Component<IContactsPageProps, IContact
     }
 
     state: IContactsPageState = {
-        contactsLoading: false,
+        contactsLoading: true,
         contacts: []
     };
 
