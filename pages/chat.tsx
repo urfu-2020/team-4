@@ -45,6 +45,9 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
         messagesLoading: true
     };
 
+    // eslint-disable-next-line no-undef
+    timeId: NodeJS.Timeout = null
+
     componentDidMount(): void {
         // @ts-ignore
         window.props = this.props;
@@ -60,6 +63,11 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
                 this.setState({ chatLoading: false, messagesLoading: false });
                 console.error('Error: ', err);
             });
+        this.timeId = setInterval(() => this.fetchMessagesOnChange(), 5000);
+    }
+
+    componentWillUnmount(): void {
+        clearInterval(this.timeId);
     }
 
     fetchChat = (): Promise<void> => {
@@ -95,6 +103,22 @@ export default class ChatPage extends Component<IChatPageProps, IChatPageState> 
                     chat.users.find((user) => user.id === this.props.contactId).nickname;
 
                 this.setState({ chat, chatLoading: false });
+            });
+    }
+
+    fetchMessagesOnChange = (): Promise<void> => {
+        if (!this.state.chat) {
+            throw new Error({ statusCode: 400, title: 'chat not found' });
+        }
+        const chat = this.state.chat;
+
+        return fetch(`/api/chat/${chat.id}/message/list?page=1&limit=0`)
+            .then((response) => response.json())
+            .then((response) => {
+                checkError(response);
+                if (response.count !== this.state.messages.length) {
+                    return this.fetchMessages();
+                }
             });
     }
 
