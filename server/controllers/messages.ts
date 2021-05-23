@@ -7,27 +7,17 @@ export function list({ params: { chatId }, query: { page, limit } }: {
     params: { chatId: number },
     query: { page: number, limit: number }
 }, res: Response): void {
-    let options;
+    const options: { order, where, limit?, offset?} = {
+        order: [
+            ['createdAt', 'ASC']
+        ],
+        where: {
+            chatId: chatId
+        }
+    };
     if (page && limit) {
-        options = {
-            order: [
-                ['createdAt', 'ASC']
-            ],
-            where: {
-                chatId: chatId
-            },
-            limit: limit,
-            offset: (page - 1) * limit
-        };
-    } else {
-        options = {
-            order: [
-                ['createdAt', 'ASC']
-            ],
-            where: {
-                chatId: chatId
-            }
-        };
+        options.limit = limit;
+        options.offset = (page - 1) * limit;
     }
 
     Message.findAndCountAll(
