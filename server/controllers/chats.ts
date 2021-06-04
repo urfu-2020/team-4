@@ -11,22 +11,27 @@ export function create({ body: { name } }: {
         .then(r => res.status(200).json(r.toJSON()))
         .catch(e => {
             console.error(e.toString());
-            res.status(400).json({ code: 400, message: e.toString() });
+            res.status(400).json({ error: { code: 400, message: e.toString() } });
         });
 }
 
 export function findOrCreate(req: Request, res: Response): void {
     const queryUsers = req.body.users;
-    chatQuery.findOrCreate({ where: { users: queryUsers },
+    chatQuery.findOrCreate({ where: { users: queryUsers.sort((a, b) => a - b) },
         defaults: {
             type: ChatTypes.PRIVATE
         } })
         .then(chat => {
-            res.redirect(`/api/chat/${chat[0].getDataValue('id')}/message/list`);
+            res.json({ chat: {
+                id: chat[0].getDataValue('id'),
+                name: chat[0].getDataValue('name'),
+                type: chat[0].getDataValue('type'),
+                users: chat[0].getDataValue('users')
+            } });
         })
         .catch(err => {
             console.error(err);
-            res.status(400).json({ code: 400, message: err.toString() });
+            res.status(400).json({ error: { code: 400, message: err.toString() } });
         });
 }
 
@@ -42,6 +47,6 @@ export function listByUser(req: Request, res: Response): void {
     })
         .catch((err) => {
             console.error(err);
-            res.status(400).json({ code: 400, message: err.toString() });
+            res.status(400).json({ error: { code: 400, message: err.toString() } });
         });
 }

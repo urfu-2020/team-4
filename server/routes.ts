@@ -10,7 +10,7 @@ const isAuthForApi = (req, res, next) => {
     if (req.user) {
         next();
     } else {
-        const error = { code: 401, message: 'unauthorized user' };
+        const error = { error: { code: 401, message: 'unauthorized user' } };
         res.status(401).json(error);
     }
 };
