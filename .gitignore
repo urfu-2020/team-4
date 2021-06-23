@@ -1,7 +1,10 @@
 .idea/
 .idea_modules/
 out/
+.next
+.env
 
 /node_modules
 /dist
 package-lock.json
+/views

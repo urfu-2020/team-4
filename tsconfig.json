@@ -1,11 +1,23 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "rootDir": ".",
+    "outDir": "dist/",
+    "baseUrl": "./server/",
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": false,
     "esModuleInterop": true,
-    "target": "es6",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist"
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "typeRoots": ["@types", "node_modules/@types"]
   },
-  "lib": ["es2015"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
